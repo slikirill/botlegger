@@ -1,0 +1,25 @@
+.card {
+    margin-bottom: 1%;
+  }
+  
+  .card-image {
+    max-width: 400px;
+    max-height: 300px;
+  }
+
+
+
+  .mat-card:not([class*=mat-elevation-z]) {
+    box-shadow: 0px 2px 6px 0px rgba(0,0,0,.12);
+}
+
+.mat-card-header-text {
+  margin: 0;
+}
+
+.mcard{
+  min-height: 100vh;
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+}

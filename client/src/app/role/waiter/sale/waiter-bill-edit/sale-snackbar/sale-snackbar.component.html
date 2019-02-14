@@ -1,0 +1,37 @@
+<div fxLayout="column">
+  <div fxLayout="row" fxFill fxLayoutAlign="space-between center">
+    <div fxFlex="90"><p>{{ data.message }}</p></div>
+    <div fxFlex="10">
+      <button mat-icon-button (click)="snackBarRef.dismiss()"><mat-icon>close</mat-icon></button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- <div fxLayout="row" fxFill fxLayoutAlign="space-between center">
+    <div fxFlex="90">{{data.item.name}} - {{data.quantity}}</div>
+    <div fxFlex="10">
+      <button mat-icon-button (click)="snackBarRef.dismiss()"><mat-icon>close</mat-icon></button>
+    </div>
+  </div>
+
+  <div fxLayout="row" *ngIf="data.newAt" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="space-between end">
+      <div fxFlex="10"><mat-icon matTooltip="Order time" matTooltipPosition="above" class="mat-18">fiber_new</mat-icon></div>
+      <div fxFlex="30"><p>{{ newAt$ | async }}</p></div>
+    </div>
+ 
+    <mat-divider></mat-divider>
+    <div fxLayout="row" *ngIf="data.progressAt" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="space-between end">
+        <div fxFlex="10"><mat-icon matTooltip="In progress" matTooltipPosition="above" class="mat-18">schedule</mat-icon></div>
+        <div fxFlex="30"><p>{{ time$ | async | date:'mediumTime' }}</p></div>
+      </div>
+      <mat-divider></mat-divider>
+      <div fxLayout="row" *ngIf="data.readyAt" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="space-between end">
+          <div fxFlex="10"><mat-icon matTooltip="Ready" matTooltipPosition="above" class="mat-18">thumb_up_alt</mat-icon></div>
+          <div fxFlex="30"><p>{{data.readyAt | date:'shortTime' }}</p></div>
+        </div>
+        <mat-divider></mat-divider>
+        <div fxLayout="row" *ngIf="data.servedAt" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="space-between end">
+            <div fxFlex="10"><mat-icon matTooltip="Served" matTooltipPosition="above" class="mat-18">restaurant</mat-icon></div>
+            <div fxFlex="30"><p>{{data.servedAt | date:'shortTime' }}</p></div>
+          </div> -->

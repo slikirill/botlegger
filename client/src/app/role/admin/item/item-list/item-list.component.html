@@ -1,0 +1,28 @@
+<div  fxLayout="row wrap" fxLayout.sm="column" fxLayoutGap="1%" fxLayoutWrap fxLayoutAlign="start center" fxLayoutAlign.sm="center"   >
+    <mat-card *ngFor="let item of items$ | async" class="card" fxFlex="49%" fxFlex.xs="100">
+        <mat-card-header fxLayout="row">
+            <div  fxLayout="row" fxFlex="70">
+                <div mat-card-avatar [ngStyle]="{'background-image':'url(/assets/images/items/'+item.image+')'}" style="background-size: cover;"></div>
+                <div fxLayout="column"> 
+                    <mat-card-title>{{item.name}} <mat-icon *ngIf="item.menuItem" aria-label="Menu item">restaurant_menu</mat-icon></mat-card-title>
+                    <mat-card-subtitle>{{item.type}}</mat-card-subtitle>
+                </div>
+            </div>
+            <div fxLayout="column" fxFlex fxLayoutAlign.sm="end center">
+                <mat-card-subtitle>{{item.quantity}} {{item.unit}}</mat-card-subtitle>
+            </div>
+        </mat-card-header>
+        <mat-card-actions fxLayout="row">
+            <div fxFlex="70">
+
+            </div>
+            <div fxFlex>
+                <button routerLink="/admin/item/{{item.id}}/edit" mat-button>EDIT</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>
+
+<div style="position: fixed; bottom: 10px; right: 10px;">
+    <a  routerLink="/admin/item/new" mat-fab color="primary"><mat-icon aria-label="Add">add</mat-icon></a>  
+</div>

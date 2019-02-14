@@ -1,0 +1,136 @@
+<mat-card class="mcard">
+    <mat-card-header>
+    <!-- <div mat-card-avatar [ngStyle]="{'background-image': 'url(/assets/images/items/' + item.image + ')'}" style="background-size: cover;"></div> -->
+    <mat-card-title *ngIf="itemForm && item">{{item.name}}</mat-card-title>
+    <mat-card-subtitle  *ngIf="itemForm && item">{{item.type}}</mat-card-subtitle>
+    </mat-card-header>
+    <form fxLayout="column" *ngIf="itemForm && item" [formGroup]="itemForm" (ngSubmit)="onUpdate()">
+      <ng-template *ngIf="!editMode">
+        <input matInput formControlName="id">
+      </ng-template>
+      <div  fxLayout="row"  fxFill fxLayoutAlign="space-between center">
+        <input hidden formControlName="image">
+        <mat-form-field fxFlex="32">
+          <input matInput placeholder="Name" formControlName="name">
+          <mat-error *ngIf="itemForm.controls['name'].hasError('required')">
+            Name is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="32">
+            <mat-select placeholder="Menu Item" name="menuItem" [(value)]="menuItem" formControlName="menuItem">
+              <mat-option value="true">Yes</mat-option>
+              <mat-option value="false">No</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field  fxFlex="32">
+          <mat-select placeholder="Executor" name="executor" [(value)]="executor" formControlName="executor">
+            <mat-option value="chef">Chef</mat-option>
+            <mat-option value="barmen">Barmen</mat-option>
+          </mat-select>
+      </mat-form-field>
+      </div>
+      <div  fxLayout="row"  fxFill  fxLayoutAlign="space-between center">
+        <mat-form-field fxFlex="32">
+            <mat-select placeholder="Category" name="categoryId" [(value)]="categoryId" formControlName="categoryId">
+              <mat-option *ngFor="let category of categories"  [value]="category.id">
+                {{category.name}}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="32">
+            <mat-select placeholder="Type" name="type" [(value)]="type" formControlName="type" (selectionChange)="typeChanged(e)">
+              <mat-option value="ingredient">Ingredient</mat-option>
+              <mat-option value="recipe">Recipe</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="32">
+            <mat-select placeholder="Tare" name="tare" [(value)]="tare" formControlName="tare">
+              <mat-option>None</mat-option>
+              <mat-option value="pack">Pack</mat-option>
+              <mat-option value="bottle">Bottle</mat-option>
+            </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxFill fxLayoutAlign="space-between center"  >
+        <mat-form-field  *ngIf="isRecipe" fxFlex="24">
+            <input matInput placeholder="Weight" formControlName="weight">
+            <mat-error *ngIf="itemForm.controls['weight'].hasError('required')">
+                Weight is
+              <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field  *ngIf="!isRecipe" fxFlex="24">
+          <input matInput placeholder="Quantity" formControlName="quantity">
+          <mat-error *ngIf="itemForm.controls['quantity'].hasError('required')">
+              Quantity is
+            <strong>required</strong>
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="8">
+          <mat-select placeholder="Unit" name="unit" [(value)]="unit" formControlName="unit">
+            <mat-option value="g">g</mat-option>
+            <mat-option value="ml">ml</mat-option>
+            <mat-option value="pieces">pieces</mat-option>
+          </mat-select>
+      </mat-form-field>
+        <mat-form-field fxFlex="24">
+          <input matInput placeholder="Average cost" formControlName="averageCost">
+          <span matSuffix>&#x24;</span>
+          <mat-error *ngIf="itemForm.controls['averageCost'].hasError('required')">
+              Average cost is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field  fxFlex="24">
+            <input matInput placeholder="Selling price" formControlName="sellingPrice">
+            <span matSuffix>&#x24;</span> 
+            <mat-error *ngIf="itemForm.controls['sellingPrice'].hasError('required')">
+                Selling price is
+              <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+      </div>
+      <div style="position: fixed; bottom: 10px; right: 10px;">
+        <button  mat-fab color="primary" type="submit"><mat-icon aria-label="Save">save</mat-icon></button>
+      </div>
+    </form>
+
+    <div *ngIf="isRecipe && editMode">
+      <div  fxLayout="row" fxFill >
+        <div fxFlex="98"><h5>Ingredients</h5></div>
+      </div>
+      <form *ngIf="ingredientsForm && ingredients" [formGroup]="ingredientsForm">
+          <div  formArrayName="ingredients" fxLayout="row wrap" fxLayout.sm="column" fxLayoutGap="1%" fxLayoutWrap fxLayoutAlign="start center" fxLayoutAlign.sm="center"   >
+              <mat-card class="card" fxFlex="49%" fxFlex.xs="100" 
+              *ngFor="let ingredientCtrl of ingredientsForm.get('ingredients').controls; let i = index"
+              [formGroupName]="i">
+                  <mat-card-header fxLayout="row">
+                      <div  fxLayout="row" fxFlex="70">
+                          <div mat-card-avatar [ngStyle]="{'background-image':'url(/assets/images/items/'+ingredients[i].ingredient.image+')'}" style="background-size: cover;"></div>
+                          <div fxLayout="column"> 
+                              <mat-card-title>{{ingredients[i].ingredient.name}} </mat-card-title>
+                              <mat-card-subtitle>{{ingredients[i].ingredient.type}}</mat-card-subtitle>
+                          </div>
+                      </div>
+                      <!-- <div fxLayout="column" fxFlex fxLayoutAlign.sm="end center">
+                          <mat-card-subtitle>{{item.quantity}} {{item.unit}}</mat-card-subtitle>
+                      </div> -->
+                  </mat-card-header>
+                  <mat-card-actions fxLayout="row">
+                      <div fxFlex="70">
+          
+                      </div>
+                      <div fxFlex>
+                          <mat-form-field >
+                              <input matInput formControlName="recipeQuantity" (focusout)="onUpdateIngredient(ingredientCtrl.value, i)">
+                              <span matSuffix>{{ingredients[i].ingredient.unit}}</span>
+                            </mat-form-field>
+                      </div>
+                  </mat-card-actions>
+              </mat-card>
+          </div>
+    </form>
+    </div>
+  </mat-card>
+

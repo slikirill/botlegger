@@ -1,0 +1,17 @@
+### Waiter login
+
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"email": "waiter@gmail.com","password": "opensesame"}' 'http://localhost:3000/api/CustomerUsers/signin'
+
+{
+  "id": "f7PzHM8BNd4qP6IvF5jHAuHw7RG5HJALmpL03wFDkGZssY7mXMnGPxQlTmY9EW53",
+  "ttl": 1209600,
+  "created": "2018-11-02T12:25:12.911Z",
+  "userId": "5bd84942a93541131b463bde",
+  "role": "waiter"
+}
+
+
+### Get menu Items
+
+
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' 'http://localhost:3000/api/Items/menu_items?access_token=f7PzHM8BNd4qP6IvF5jHAuHw7RG5HJALmpL03wFDkGZssY7mXMnGPxQlTmY9EW53'

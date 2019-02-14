@@ -1,0 +1,79 @@
+{
+  "name": "Ingredient",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "ingredientId": {
+      "type": "string",
+      "required": true
+    },
+    "recipeId": {
+      "type": "string",
+      "required": true
+    },
+    "recipeQuantity": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "ingredient": {
+      "type": "hasOne",
+      "model": "Item",
+      "foreignKey": "id",
+      "primaryKey": "ingredientId"
+    },
+    "recipe": {
+      "type": "hasOne",
+      "model": "Item",
+      "foreignKey": "id",
+      "primaryKey": "recipeId"
+    },
+    "item": {
+      "type": "belongsTo",
+      "model": "Item",
+      "foreignKey": ""
+    }
+  },
+  "acls": [    
+    {
+    "accessType": "*",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "find"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "search"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "findAllByRecipe"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "updateIngredient"
+    }
+  ],
+  "methods": {}
+}

@@ -1,0 +1,17 @@
+### Admin login
+
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"email": "admin@gmail.com","password": "opensesame"}' 'http://localhost:3000/api/CustomerUsers/signin'
+
+
+{
+  "id": "fK1FxIU2dEKj2GCNXJwEAMDxfbCSz6sKg3NHGVQDvgG4JncQuPBoSJ0qTh3nZBHp",
+  "ttl": 1209600,
+  "created": "2018-11-02T11:14:36.215Z",
+  "userId": "5bd84942a93541131b463bdd",
+  "role": "admin"
+}
+
+### Get items
+
+curl -X GET --header 'Accept: application/json' 'http://localhost:3000/api/Items?access_token=fK1FxIU2dEKj2GCNXJwEAMDxfbCSz6sKg3NHGVQDvgG4JncQuPBoSJ0qTh3nZBHp'
+

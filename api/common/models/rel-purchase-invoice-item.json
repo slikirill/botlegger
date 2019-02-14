@@ -1,0 +1,68 @@
+{
+  "name": "relPurchaseInvoiceItem",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "itemId": {
+      "type": "string",
+      "required": true
+    },
+    "purchaseInvoiceId": {
+      "type": "string",
+      "required": true
+    },
+    "quantity": {
+      "type": "number",
+      "required": true
+    },
+    "purchasePrice": {
+      "type": "number",
+      "required": true
+    },
+    "total": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "item": {
+      "type": "hasOne",
+      "model": "Item",
+      "foreignKey": "id",
+      "primaryKey": "itemId"
+    },
+    "purchaseInvoice": {
+      "type": "hasOne",
+      "model": "PurchaseInvoice",
+      "foreignKey": "id",
+      "primaryKey": "purchaseInvoiceId"
+    }
+  },
+  "acls": [    
+  {
+    "accessType": "*",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "DENY"
+  },
+  {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "admin",
+    "permission": "ALLOW",
+    "property": "searchItemsPurchaseInvoice"
+  },
+  {
+    "accessType": "EXECUTE",
+    "principalType": "ROLE",
+    "principalId": "admin",
+    "permission": "ALLOW",
+    "property": "updatePurchaseInvoiceItem"
+  }
+],
+  "methods": {}
+}

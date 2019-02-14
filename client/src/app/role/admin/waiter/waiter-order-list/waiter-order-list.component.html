@@ -1,0 +1,65 @@
+<div  fxLayout="row wrap" fxLayout.sm="column" fxLayoutGap="1%" fxLayoutWrap fxLayoutAlign="start center" fxLayoutAlign.sm="center"   >
+  <mat-card *ngFor="let order of orders$ | async; let i = index" class="card" fxFlex="49%" fxFlex.xs="100">
+      <mat-card-header fxLayout="row">
+          <div  fxLayout="row" fxFlex="70">
+              <div mat-card-avatar [ngStyle]="{'background-image':'url(/assets/images/items/'+order.item.image+')'}" style="background-size: cover;"></div>
+              <div fxLayout="column"> 
+                  <mat-card-title>{{order.item.name}} <mat-icon *ngIf="order.menuItem" aria-label="Menu order">restaurant_menu</mat-icon></mat-card-title>
+                  <mat-card-subtitle>{{order.quantity}} x {{order.sellingPrice}}</mat-card-subtitle>
+              </div>
+          </div>
+          <div fxLayout="column" fxFlex fxLayoutAlign.sm="end center">
+            <div [ngSwitch]="order.state">
+              <ng-container *ngSwitchCase= "'new'">   
+                <button mat-icon-button  color="primary">
+                  <mat-icon aria-label="Example icon-button with a heart icon">fiber_new</mat-icon>
+                </button> 
+              </ng-container>
+              <ng-container *ngSwitchCase= "'progress'">
+                <button mat-icon-button color="primary">
+                  <mat-icon aria-label="Example icon-button with a heart icon">update</mat-icon>
+                </button> 
+              </ng-container>
+              <ng-container *ngSwitchCase= "'ready'">
+                <button mat-icon-button color="primary">
+                  <mat-icon aria-label="Example icon-button with a heart icon">thumb_up_alt</mat-icon>
+                </button>                 
+              </ng-container>
+              <ng-container *ngSwitchCase= "'served'">                
+                <button mat-icon-button color="primary">
+                  <mat-icon aria-label="Example icon-button with a heart icon">restaurant_menu</mat-icon>
+                </button>    
+              </ng-container>
+            </div> 
+          </div>
+      </mat-card-header>
+      <mat-card-actions fxLayout="row">
+          <div fxFlex="70">
+
+          </div>
+          <div [ngSwitch]="order.state">
+              <ng-container *ngSwitchCase= "'new'">   
+                  <div fxFlex>
+                      <button disabled="true" mat-button (click)="changeState(order.id,'progress', i);">PROGRESS</button>
+                  </div>
+              </ng-container>
+              <ng-container *ngSwitchCase= "'progress'" >
+                  <div fxFlex>
+                      <button disabled="true" mat-button (click)="changeState(order.id,'ready', i);">READY</button>
+                  </div>
+              </ng-container>
+              <ng-container *ngSwitchCase= "'ready'">
+                  <div fxFlex>
+                      <button mat-button (click)="changeState(order.id,'served', i);">SERVE</button>
+                  </div>             
+              </ng-container>
+              <ng-container *ngSwitchCase= "'served'">                
+                  <div fxFlex>
+                      <button routerLink="/admin/sale/{{order.salesInvoiceId}}/edit" mat-button>INVOICE</button>
+                  </div> 
+              </ng-container>
+            </div> 
+
+      </mat-card-actions>
+  </mat-card>
+</div>

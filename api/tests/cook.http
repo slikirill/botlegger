@@ -1,0 +1,2 @@
+
+curl -X GET --header 'Accept: application/json' 'http://localhost:3000/api/Items?access_token=rgCc6a2MkbRDwCe4cCHna0ROFIrGgZUHbxElyTlmud0TxOKw7pfHgx8LKbc0Ewkr'

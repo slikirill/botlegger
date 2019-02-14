@@ -1,0 +1,120 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+
+
+import { Item } from './model/Item';
+import { Order } from './model/Order';
+
+
+import {
+  map,
+  switchMap,
+} from 'rxjs/operators';
+import {
+  BehaviorSubject,
+  Observable,
+  timer
+} from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class WaiterService {
+
+  public items: BehaviorSubject<Item[]>  = new BehaviorSubject<Item[]>(null);
+  public items$: Observable<Item[]> = this.items.asObservable();
+
+  public orders: BehaviorSubject<Order[]>  = new BehaviorSubject<Order[]>(null);
+  public orders$: Observable<Order[]> = this.orders.asObservable();
+
+  constructor(private http: HttpClient) { }
+
+  public getItems(filter: string | Boolean = false, fullText: string | Boolean = false) {
+    if (!filter) {
+      this.listItems(fullText);
+    } else if (filter === 'stoplist') {
+      this.listStopList(fullText);
+    }
+  }
+
+  public listItems(fullText: string | Boolean = false) {
+    return this.http.get<Item[]>('http://localhost:3000/api/Items/listItems', {
+      params: new HttpParams()
+        .set('fullText', fullText.toString())
+    }).subscribe(
+      data => this.items.next(data)
+    );
+  }
+
+  public listStopList(fullText: string | Boolean = false) {
+    return this.http.get<Item[]>('http://localhost:3000/api/Items/listStopList', {
+      params: new HttpParams()
+        .set('fullText', fullText.toString())
+    }).subscribe(
+      data => this.items.next(data)
+    );
+  }
+
+  public serveOrder(id, index) {
+    return this.http.get('http://localhost:3000/api/relSalesInvoiceItems/serveOrder?id=' + id
+    ).subscribe(
+      () => this.orders.value[index].state = 'served'
+    );
+  }
+
+  public getOrders(filter: string | Boolean = false) {
+    timer(0, 1000 * 30).pipe(
+      switchMap(() => this.http.get<Order[]>('http://localhost:3000/api/relSalesInvoiceItems/listOrders', {
+          params: new HttpParams()
+            .set('filter', filter.toString())
+        }))
+    ).subscribe((data: Order[]) => this.orders.next(data));
+  }
+
+  public findSaleInvoices(
+    filter: string | Boolean = false,
+    order = 'id ASC',
+    pageNumber = 0,
+    pageSize = 1,
+    startDate = null,
+    endDate = null) {
+    let offset = 0;
+    if (pageNumber === 0) {
+      offset = 0;
+    } else {
+      offset = pageSize * pageNumber + 1;
+    }
+
+
+    const fil = undefined;
+    startDate = startDate === null ? '0000-09-30T21:00:00.000Z' : startDate.toISOString();
+    endDate = endDate === null ? '9999-09-30T21:00:00.000Z' : endDate.toISOString();
+
+    let params = new HttpParams()
+    .set('filter[limit]', pageSize.toString())
+    .set('filter[order]', order)
+    .set('filter[limit]',  pageSize.toString() )
+    .set('filter[skip]', offset.toString());
+
+    if (filter === 'closed' || filter === 'opened') {
+      params = params.set('filter[where][state]', filter);
+    }
+
+    return this.http.get('http://localhost:3000/api/SalesInvoices',
+    {
+      observe: 'response',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Prefer': 'count=exact'
+      }),
+      params: params
+
+    }).pipe(
+      map(data => {
+        // console.log(data);
+        return data;
+      })
+    );
+  }
+
+}

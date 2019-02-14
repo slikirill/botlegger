@@ -1,0 +1,17 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "MongoDB": {
+    "host": "localhost",
+    "port": 27017,
+    "url": "mongodb://mongodb:27017/botlegger",
+    "database": "botlegger",
+    "password": "Xa6glORWWs3ZV5SMGB4zwOJZS2kP2wfn",
+    "name": "MongoDB",
+    "user": "RNnaZfIMNn8PiDMYQh0EInnJks2Pkgag",
+    "connector": "mongodb",
+    "allowExtendedOperators": true
+  }
+}

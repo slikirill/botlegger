@@ -1,0 +1,28 @@
+<div fxLayout="row" fxLayoutAlign="center center" style="height: 100vh;">
+  <mat-card>
+    <form fxLayout="column"  [formGroup]="signinForm" (ngSubmit)="onSignin()">
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName="email">
+        <mat-error *ngIf="signinForm.controls['email'].hasError('email') && !signinForm.controls['email'].hasError('required')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="signinForm.controls['email'].hasError('required')">
+          Email is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Password" type="text" formControlName="password">
+        <mat-error *ngIf="signinForm.controls['password'].hasError('required')">
+          Password is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+       <button mat-raised-button color="primary"  type="submit" [disabled]="!signinForm.valid">Sign in</button>
+    </form>
+  </mat-card>
+</div>dfgdfg
+
+
+
+

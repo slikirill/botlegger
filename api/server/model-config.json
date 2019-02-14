@@ -1,0 +1,75 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "MongoDB",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "MongoDB",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "MongoDB",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "MongoDB",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "MongoDB",
+    "public": false
+  },
+  "Item": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "Ingredient": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "PurchaseInvoice": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "relPurchaseInvoiceItem": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "SalesInvoice": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "relSalesInvoiceItem": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "CustomerUser": {
+    "dataSource": "MongoDB",
+    "public": true
+  },
+  "CustomerToken": {
+    "dataSource": "MongoDB",
+    "public": false
+  },
+  "Category": {
+    "dataSource": "MongoDB",
+    "public": true
+  }
+}

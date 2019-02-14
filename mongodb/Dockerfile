@@ -1,0 +1,7 @@
+FROM mongo:latest
+
+ENV MONGO_INITDB_ROOT_USERNAME ll8U1hvnjki19NPMwyzIQGueVb8qAAOY
+ENV MONGO_INITDB_ROOT_PASSWORD SVvHl14jYqfnQScRaRtsiiYdZ453jV7i
+ENV MONGO_INITDB_DATABASE botlegger
+
+ADD mongo-init.js /docker-entrypoint-initdb.d/

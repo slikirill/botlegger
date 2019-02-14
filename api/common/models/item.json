@@ -1,0 +1,205 @@
+{
+  "name": "Item",
+  "base": "PersistedModel",
+  "enableRemoteReplication": true,
+  "useNewUrlParser": true,
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "executor": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "string",
+      "required": false,
+      "default": "no-image.png"
+    },
+    "description": {
+      "type": "string",
+      "required": false
+    },
+    "category": {
+      "type": "string",
+      "required": false
+    },
+    "tare": {
+      "type": "string",
+      "required": false
+    },
+    "quantity": {
+      "type": "number",
+      "required": false
+    },
+    "weight": {
+      "type": "number",
+      "required": false
+    },
+    "unit": {
+      "type": "string",
+      "required": true
+    },
+    "menuItem": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "averageCost": {
+      "type": "number",
+      "required": true
+    },
+    "autoSellingPrice": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "sellingPrice": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "recipe": {
+      "type": "hasMany",
+      "model": "Ingredient",
+      "foreignKey": "recipeId",
+      "primaryKey": "id",
+      "through": "Ingredient"
+    },
+    "ingredient": {
+      "type": "hasMany",
+      "model": "Ingredient",
+      "foreignKey": "ingredientId",
+      "through": "Ingredient"
+    },
+    "category": {
+      "type": "hasOne",
+      "model": "category",
+      "foreignKey": "id"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "find"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "__get__recipe"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "findById"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "replaceOrCreate"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "waiter",
+      "permission": "ALLOW",
+      "property": "getMenuItems"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "saveOrUpdate"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "search"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "searchMenuItems"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "countStopList"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "countShoppingList"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "listItems"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "listStopList"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "listShoppingList"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "waiter",
+      "permission": "ALLOW",
+      "property": "listItems"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "waiter",
+      "permission": "ALLOW",
+      "property": "listStopList"
+    }
+  ],
+  "methods": {}
+}
