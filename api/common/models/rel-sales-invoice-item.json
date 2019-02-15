@@ -187,14 +187,14 @@
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW",
-      "property": "listOrdersBarmen"
+      "property": "listOrdersBarman"
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
-      "principalId": "barmen",
+      "principalId": "barman",
       "permission": "ALLOW",
-      "property": "listOrdersBarmen"
+      "property": "listOrdersBarman"
     },
     {
       "accessType": "EXECUTE",

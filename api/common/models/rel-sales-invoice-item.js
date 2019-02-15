@@ -197,11 +197,11 @@ module.exports = function(Relsalesinvoiceitem) {
       });
   };
 
-  Relsalesinvoiceitem.listOrdersBarmen = function(filter = false, callback) {
+  Relsalesinvoiceitem.listOrdersBarman = function(filter = false, callback) {
     if (filter === 'false') {
-      var where = {executor: 'barmen'};
+      var where = {executor: 'barman'};
     } else {
-      where = {and: [{executor: 'barmen'}, {state: filter}]};
+      where = {and: [{executor: 'barman'}, {state: filter}]};
     }
     Relsalesinvoiceitem.find({
       where,
@@ -383,7 +383,7 @@ module.exports = function(Relsalesinvoiceitem) {
     returns: {arg: 'orders', type: 'Object', 'root': true},
   });
 
-  Relsalesinvoiceitem.remoteMethod('listOrdersBarmen', {
+  Relsalesinvoiceitem.remoteMethod('listOrdersBarman', {
     accepts: [
       {arg: 'filter', type: 'string'},
     ],

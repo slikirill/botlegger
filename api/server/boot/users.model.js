@@ -14,27 +14,10 @@
 //           {username: 'Administrator', email: 'admin@gmail.com', password: 'opensesame', 'role': 'admin'},
 //           {username: 'Waiter', email: 'waiter@gmail.com', password: 'opensesame', 'role': 'waiter'},
 //           {username: 'Chef', email: 'chef@gmail.com', password: 'opensesame', 'role': 'chef'},
-//           {username: 'Barmen', email: 'barmen@gmail.com', password: 'opensesame', 'role': 'barmen'},
+//           {username: 'Barman', email: 'barman@gmail.com', password: 'opensesame', 'role': 'barman'},
 //         ], cb);
 //       });
-//     },
-//     // createTokens: ['createUsers', function(results, cb) {
-//     //   console.log('createTokens');
-//     //   mongoDB.autoupdate('CustomerToken', function(err) {
-//     //     if (err) return cb(err);
-//     //     var CustomerToken = app.models.CustomerToken;
-//     //     // CustomerToken.create([
-//     //     //   {
-//     //     //     _id: 'by4TMZOQxS5YwMLyZibyGdwRUzAGXGny7bhxWQOGWkhnULHVXtZKJMRqdoNAO2Cm',
-//     //     //     ttl: 1209600,
-//     //     //     created: '2019-01-26T15:04:32.047Z',
-//     //     //     userId: {
-//     //     //       oid: '5c471865abfbb66dcf2d1690',
-//     //     //     },
-//     //     //   },
-//     //     // ], cb);
-//     //   });
-//     // }],
+//     }, 
 //     createRoles: ['createUsers', function(results, cb) {
 //       console.log('createRoles');
 //       mongoDB.autoupdate('Role', function(err) {
@@ -92,9 +75,9 @@
 //             // console.log('Created principal:', principal);
 //           });
 //         });
-//         // create barmen role
+//         // create barman role
 //         Role.create({
-//           name: 'barmen',
+//           name: 'barman',
 //         }, function(err, role) {
 //           if (err) throw err;
 

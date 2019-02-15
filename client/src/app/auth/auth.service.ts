@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class AuthService {
 
-  role = ['admin' , 'bartender' , 'chef' , 'waiter'];
+  role = ['admin' , 'barman' , 'chef' , 'waiter'];
   accessToken = null;
 
   constructor(private router: Router, private http: HttpClient) {}

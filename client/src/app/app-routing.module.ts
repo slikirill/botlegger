@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules, NoPreloading } from '@angular/router';
+import { Routes, RouterModule, NoPreloading } from '@angular/router';
 import { RoleGuard } from './auth/role-guard.service';
 
 import { SignupComponent } from './auth/signup/signup.component';
@@ -18,11 +18,11 @@ const appRoutes: Routes = [
       delay: false
     }
   },
-  { path: 'barmen',
-    loadChildren: './role/barmen/barmen.module#BarmenModule',
+  { path: 'barman',
+    loadChildren: './role/barman/barman.module#BarmanModule',
     // canActivate: [RoleGuard],
     data: {
-      expectedRole: 'barmen',
+      expectedRole: 'barman',
       preload: false,
       delay: false
     }
