@@ -19,6 +19,7 @@
     "loopback": "^3.22.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^6.2.0",
+    "loopback-component-storage": "^3.5.0",
     "loopback-connector-mongodb": "^3.8.0",
     "loopback-content-range": "^1.0.1",
     "loopback-mongo-bulk-mixin": "^1.0.3",

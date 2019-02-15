@@ -42,27 +42,27 @@
       "primaryKey": "purchaseInvoiceId"
     }
   },
-  "acls": [    
-  {
-    "accessType": "*",
-    "principalType": "ROLE",
-    "principalId": "$everyone",
-    "permission": "DENY"
-  },
-  {
-    "accessType": "EXECUTE",
-    "principalType": "ROLE",
-    "principalId": "admin",
-    "permission": "ALLOW",
-    "property": "searchItemsPurchaseInvoice"
-  },
-  {
-    "accessType": "EXECUTE",
-    "principalType": "ROLE",
-    "principalId": "admin",
-    "permission": "ALLOW",
-    "property": "updatePurchaseInvoiceItem"
-  }
-],
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "searchItemsPurchaseInvoice"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "updatePurchaseInvoiceItem"
+    }
+  ],
   "methods": {}
 }

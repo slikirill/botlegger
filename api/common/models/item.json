@@ -1,12 +1,12 @@
 {
   "name": "Item",
   "base": "PersistedModel",
-  "enableRemoteReplication": true,
-  "useNewUrlParser": true,
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
+  "enableRemoteReplication": true,
+  "useNewUrlParser": true,
   "properties": {
     "name": {
       "type": "string",

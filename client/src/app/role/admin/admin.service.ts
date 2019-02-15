@@ -325,4 +325,12 @@ export class AdminService {
       })
     );
   }
+
+  uploadFile(fileToUpload: any) {
+return this.http.post('http://localhost:3000/api/storages/images/upload', fileToUpload).pipe(
+  map(data => {
+    return data;
+  })
+);
+  }
 }

@@ -13,5 +13,11 @@
     "user": "RNnaZfIMNn8PiDMYQh0EInnJks2Pkgag",
     "connector": "mongodb",
     "allowExtendedOperators": true
+  },
+  "storage": {
+    "name": "storage",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "./tmp/storage"
   }
 }

@@ -56,7 +56,7 @@
       "primaryKey": "salesInvoiceId"
     }
   },
-  "acls": [    
+  "acls": [
     {
       "accessType": "*",
       "principalType": "ROLE",
