@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { WaiterRoutingModule } from './waiter-routing.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { SaleComponent } from './sale/sale.component';
-import { WaiterOrderListComponent } from './sale/waiter-order-list/waiter-order-list.component';
-import { WaiterBillListComponent } from './sale/waiter-bill-list/waiter-bill-list.component';
-import { WaiterBillEditComponent } from './sale/waiter-bill-edit/waiter-bill-edit.component';
-import { WaiterSaleSnackbarComponent } from './sale/waiter-bill-edit/sale-snackbar/sale-snackbar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
+
+
 import {
   MatCardModule,
   MatToolbarModule,
@@ -36,6 +34,15 @@ import {
   MatTooltipModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS
 } from '@angular/material';
+
+import { WaiterSaleSnackbarComponent } from './waiter-bill-edit/sale-snackbar/sale-snackbar.component';
+import { WaiterOrderListComponent } from './waiter-order-list/waiter-order-list.component';
+import { WaiterBillListComponent } from './waiter-bill-list/waiter-bill-list.component';
+import { WaiterBillEditComponent } from './waiter-bill-edit/waiter-bill-edit.component';
+import { StubSharedModule } from './../../shared/stub/stub.shared.module';
+import { DashboardSharedModule } from './../../shared/dashboard/dashboard.shared.module';
+import { NotFoundSharedModule } from './../../shared/not-found/not-found.shared.module';
+
 
 @NgModule({
   imports: [
@@ -67,17 +74,19 @@ import {
     MatSnackBarModule,
     MatDialogModule,
     MatBadgeModule,
-    MatTooltipModule
+    MatTooltipModule,
+    DashboardSharedModule,
+    StubSharedModule,
+    NotFoundSharedModule
   ],
   declarations: [
-    DashboardComponent,
-    SaleComponent,
     WaiterOrderListComponent,
     WaiterBillListComponent,
     WaiterBillEditComponent,
     WaiterSaleSnackbarComponent,
+
   ],
-  entryComponents: [WaiterSaleSnackbarComponent],
+  entryComponents: [ WaiterSaleSnackbarComponent ],
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 100000}}
   ],

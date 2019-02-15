@@ -1,12 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ChefRoutingModule } from './chef-routing.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { ChefOrderListComponent } from './sale/chef-order-list/chef-order-list.component';
-import { SaleComponent } from './sale/sale.component';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatCardModule,
   MatToolbarModule,
@@ -34,6 +30,11 @@ import {
   MatTooltipModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS
 } from '@angular/material';
+
+import { StubSharedModule } from './../../shared/stub/stub.shared.module';
+import { DashboardSharedModule } from './../../shared/dashboard/dashboard.shared.module';
+import { NotFoundSharedModule } from './../../shared/not-found/not-found.shared.module';
+import { ChefOrderListComponent } from './chef-order-list/chef-order-list.component';
 
 @NgModule({
   imports: [
@@ -65,8 +66,17 @@ import {
     MatSnackBarModule,
     MatDialogModule,
     MatBadgeModule,
-    MatTooltipModule
+    MatTooltipModule,
+    DashboardSharedModule,
+    StubSharedModule,
+    NotFoundSharedModule
   ],
-  declarations: [DashboardComponent, ChefOrderListComponent, SaleComponent]
+  declarations: [
+    ChefOrderListComponent,
+  ],
+  entryComponents: [  ],
+  providers: [
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 100000}}
+  ],
 })
 export class ChefModule { }

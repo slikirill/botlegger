@@ -24,10 +24,10 @@ export class TokenExpInterceptor implements HttpInterceptor {
         }, (err: any) => {
             if (err instanceof HttpErrorResponse) {
               if (err.status === 401) {
-                this.authService.logout();
+                this.router.navigate([this.authService.getRole() + '/404']);
               }
               if (err.status === 404) {
-                this.router.navigate([this.authService.getRole()]);
+                this.router.navigate([this.authService.getRole() + '/404']);
               }
             }
         })

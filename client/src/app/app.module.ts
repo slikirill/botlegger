@@ -23,33 +23,37 @@ import { RoleGuard } from './auth/role-guard.service';
 import { AppRoutingModule } from './app-routing.module';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthService } from './auth/auth.service';
+import { NotFoundSharedModule } from './shared/not-found/not-found.shared.module';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SigninComponent,
-    SignoutComponent,
-    SignupComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FlexLayoutModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatInputModule,
-    MatButtonModule,
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenExpInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    AuthService,
-    RoleGuard],
-  bootstrap: [AppComponent]
+   declarations: [
+      AppComponent,
+      SigninComponent,
+      SignoutComponent,
+      SignupComponent,
+   ],
+   imports: [
+      BrowserModule,
+      BrowserAnimationsModule,
+      FlexLayoutModule,
+      FormsModule,
+      ReactiveFormsModule,
+      AppRoutingModule,
+      HttpClientModule,
+      MatCardModule,
+      MatToolbarModule,
+      MatInputModule,
+      MatButtonModule,
+      NotFoundSharedModule
+   ],
+   providers: [
+      { provide: HTTP_INTERCEPTORS, useClass: TokenExpInterceptor, multi: true },
+      { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+      AuthService,
+      RoleGuard],
+   bootstrap: [
+      AppComponent
+   ]
 })
 export class AppModule { }

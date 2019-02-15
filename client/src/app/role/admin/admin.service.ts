@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 
-import { Item } from './model/Item';
-import { Order } from './model/Order';
-import { Category } from './model/Category';
-import { Ingredient } from './model/Ingredient';
-import { PurchaseInvoice } from './model/PurchaseInvoice';
-import { SaleInvoice } from './model/SaleInvoice';
+import { Item } from './../../model/Item';
+import { Order } from './../../model/Order';
+import { Category } from './../../model/Category';
+import { Ingredient } from './../../model/Ingredient';
+import { PurchaseInvoice } from './../../model/PurchaseInvoice';
+import { SaleInvoice } from './../../model/SaleInvoice';
 
 import {
   map,

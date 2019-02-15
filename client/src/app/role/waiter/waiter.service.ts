@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 
-import { Item } from './model/Item';
-import { Order } from './model/Order';
-import { SaleInvoice } from './model/SaleInvoice';
+import { Item } from './../../model/Item'; 
+import { Order } from './../../model/Order';
+import { SaleInvoice } from './../../model/SaleInvoice';
 
 import {
   map,
@@ -23,6 +23,9 @@ export class WaiterService {
 
   public items: BehaviorSubject<Item[]>  = new BehaviorSubject<Item[]>(null);
   public items$: Observable<Item[]> = this.items.asObservable();
+
+  public orders: BehaviorSubject<Order[]>  = new BehaviorSubject<Order[]>(null);
+  public orders$: Observable<Order[]> = this.orders.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -54,28 +57,18 @@ export class WaiterService {
 
   public serveOrder(id, index) {
     return this.http.get('http://localhost:3000/api/relSalesInvoiceItems/serveOrder?id=' + id
-    ).pipe(
-      map(data => 'served')
+    ).subscribe(
+      () => this.orders.value[index].state = 'served'
     );
   }
 
   public getOrders(filter: string | Boolean = false) {
-    return this.http.get<Order[]>('http://localhost:3000/api/relSalesInvoiceItems/listOrders', {
-      params: new HttpParams()
-        .set('filter', filter.toString())
-    }).pipe(
-      map(data => {
-        return data;
-      })
-    );
-  }
-
-  public searchMenuItems(fullText): Observable<Item[]> {
-    return this.http.get<Item[]>('http://localhost:3000/api/Items/searchMenuItems?fullText=' + fullText.toString()).pipe(
-      map(data => {
-        return data;
-      })
-    );
+    timer(0, 1000 * 30).pipe(
+      switchMap(() => this.http.get<Order[]>('http://localhost:3000/api/relSalesInvoiceItems/listOrders', {
+          params: new HttpParams()
+            .set('filter', filter.toString())
+        }))
+    ).subscribe((data: Order[]) => this.orders.next(data));
   }
 
   public findSaleInvoices(
@@ -119,6 +112,14 @@ export class WaiterService {
     }).pipe(
       map(data => {
         // console.log(data);
+        return data;
+      })
+    );
+  }
+
+  public searchMenuItems(fullText): Observable<Item[]> {
+    return this.http.get<Item[]>('http://localhost:3000/api/Items/searchMenuItems?fullText=' + fullText.toString()).pipe(
+      map(data => {
         return data;
       })
     );

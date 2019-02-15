@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules, NoPreloading } from '@angular/router';
 import { RoleGuard } from './auth/role-guard.service';
 
 import { SignupComponent } from './auth/signup/signup.component';
@@ -8,32 +8,40 @@ import { SignoutComponent } from './auth/signout/signout.component';
 
 
 const appRoutes: Routes = [
-  { path: '', component: SigninComponent },
+  { path: '', redirectTo: '/signin', pathMatch: 'full' },
   { path: 'admin',
     loadChildren: './role/admin/admin.module#AdminModule',
     canActivate: [RoleGuard],
     data: {
-      expectedRole: 'admin'
+      expectedRole: 'admin',
+      preload: false,
+      delay: false
     }
   },
-  { path: 'bartender',
-    loadChildren: './role/bartender/bartender.module#BartenderModule',
+  { path: 'barmen',
+    loadChildren: './role/barmen/barmen.module#BarmenModule',
     // canActivate: [RoleGuard],
     data: {
-      expectedRole: 'bartender'
+      expectedRole: 'barmen',
+      preload: false,
+      delay: false
     }
   },
   { path: 'chef', loadChildren: './role/chef/chef.module#ChefModule',
     // canActivate: [RoleGuard],
     data: {
-      expectedRole: 'chef'
+      expectedRole: 'chef',
+      preload: false,
+      delay: false
     }
   },
   { path: 'waiter',
     loadChildren: './role/waiter/waiter.module#WaiterModule',
     // canActivate: [RoleGuard],
     data: {
-      expectedRole: 'waiter'
+      expectedRole: 'waiter',
+      preload: false,
+      delay: false
     }
   },
   { path: 'signup', component: SignupComponent },
@@ -43,7 +51,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes, {preloadingStrategy: PreloadAllModules})
+    RouterModule.forRoot(appRoutes, {preloadingStrategy: NoPreloading})
   ],
   exports: [RouterModule]
 })

@@ -14,7 +14,7 @@
 //           {username: 'Administrator', email: 'admin@gmail.com', password: 'opensesame', 'role': 'admin'},
 //           {username: 'Waiter', email: 'waiter@gmail.com', password: 'opensesame', 'role': 'waiter'},
 //           {username: 'Chef', email: 'chef@gmail.com', password: 'opensesame', 'role': 'chef'},
-//           {username: 'Bartender', email: 'bartender@gmail.com', password: 'opensesame', 'role': 'bartender'},
+//           {username: 'Barmen', email: 'barmen@gmail.com', password: 'opensesame', 'role': 'barmen'},
 //         ], cb);
 //       });
 //     },
@@ -92,9 +92,9 @@
 //             // console.log('Created principal:', principal);
 //           });
 //         });
-//         // create bartender role
+//         // create barmen role
 //         Role.create({
-//           name: 'bartender',
+//           name: 'barmen',
 //         }, function(err, role) {
 //           if (err) throw err;
 
