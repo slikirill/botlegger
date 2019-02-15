@@ -129,6 +129,76 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
+      "principalId": "waiter",
+      "permission": "ALLOW",
+      "property": "countNew"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "waiter",
+      "permission": "ALLOW",
+      "property": "countProgress"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "waiter",
+      "permission": "ALLOW",
+      "property": "countReady"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "chef",
+      "permission": "ALLOW",
+      "property": "countNew"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "chef",
+      "permission": "ALLOW",
+      "property": "countProgress"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "chef",
+      "permission": "ALLOW",
+      "property": "countReady"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "barman",
+      "permission": "ALLOW",
+      "property": "countNew"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "barman",
+      "permission": "ALLOW",
+      "property": "countProgress"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "barman",
+      "permission": "ALLOW",
+      "property": "countReady"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "barman",
+      "permission": "ALLOW",
+      "property": "listOrdersBarman"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW",
       "property": "listOrders"

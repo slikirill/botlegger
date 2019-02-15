@@ -23,6 +23,7 @@ const routes: Routes = [
         children: [
           { path: '', component: WaiterBillListComponent },
           { path: ':id/edit', component: WaiterBillEditComponent },
+          { path: ':filter/show', component: WaiterBillListComponent },
         ]
       },
       {path: '404', component: NotFoundComponent},
