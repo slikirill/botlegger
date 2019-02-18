@@ -232,11 +232,14 @@ export class AdminService {
 
   public findSaleInvoices(
     filter: string | Boolean = false,
-    order = 'id ASC',
+    order = 'openedAt ASC',
     pageNumber = 0,
     pageSize = 1,
-    startDate = null,
-    endDate = null) {
+    openedDateBegin = null,
+    openedDateEnd = null,
+    closedDateBegin = null,
+    closedDateEnd = null,
+    ) {
     let offset = 0;
     if (pageNumber === 0) {
       offset = 0;
@@ -244,19 +247,25 @@ export class AdminService {
       offset = pageSize * pageNumber + 1;
     }
 
+    openedDateBegin = openedDateBegin === null ? '0000-09-30T21:00:00.000Z' : openedDateBegin.toISOString();
+    openedDateEnd = openedDateEnd === null ? '9999-09-30T21:00:00.000Z' : openedDateEnd.toISOString();
 
-    const fil = undefined;
-    startDate = startDate === null ? '0000-09-30T21:00:00.000Z' : startDate.toISOString();
-    endDate = endDate === null ? '9999-09-30T21:00:00.000Z' : endDate.toISOString();
+    closedDateBegin = closedDateBegin === null ? '0000-09-30T21:00:00.000Z' : closedDateBegin.toISOString();
+    closedDateEnd = closedDateEnd === null ? '9999-09-30T21:00:00.000Z' : closedDateEnd.toISOString();
 
+
+    console.log('', openedDateBegin)
+
+    console.log('', openedDateEnd)
     let params = new HttpParams()
     .set('filter[limit]', pageSize.toString())
     .set('filter[order]', order)
     .set('filter[limit]',  pageSize.toString() )
     .set('filter[skip]', offset.toString())
-    .set('filter[where][openedAt][between][0]', startDate)
-    .set('filter[where][openedAt][between][1]', endDate);
-    
+    .set('filter[where][openedAt][between][0]', openedDateBegin)
+    .set('filter[where][openedAt][between][1]', openedDateEnd)
+    .set('filter[where][closedAt][between][0]', closedDateBegin)
+    .set('filter[where][closedAt][between][1]', closedDateEnd);
     if (filter === 'closed' || filter === 'opened') {
       params = params.set('filter[where][state]', filter);
     }

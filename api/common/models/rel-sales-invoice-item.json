@@ -43,17 +43,11 @@
   },
   "validations": [],
   "relations": {
+
     "item": {
-      "type": "hasOne",
-      "model": "Item",
-      "foreignKey": "id",
-      "primaryKey": "itemId"
-    },
-    "salesInvoice": {
-      "type": "hasOne",
+      "type": "belongsTo",
       "model": "SalesInvoice",
-      "foreignKey": "id",
-      "primaryKey": "salesInvoiceId"
+      "foreignKey": ""
     }
   },
   "acls": [

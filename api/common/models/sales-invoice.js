@@ -46,7 +46,48 @@ module.exports = function(Salesinvoice) {
       cb(null, count);
     });
   };
-  
+
+  Salesinvoice.beforeRemote('find', function(ctx, unused, next) {
+    console.log('', ctx.args.filter.where.openedAt.between[0]);
+    console.log('', ctx.args.filter.where.openedAt.between[1]);
+
+    Salesinvoice.find({where:
+    {openedAt:
+    {between: [
+      ctx.args.filter.where.openedAt.between[0],
+      ctx.args.filter.where.openedAt.between[1],
+    ]},
+    },
+      include: {relation: 'item'}}, function(err, data) {
+      if (err) {
+        return console.log(err);
+      } else {
+        let revenue = 0;
+        let averageCostSummary = 0;
+        data.forEach(invoice => {
+          var p = invoice.toJSON();
+          p.item.forEach(item => {
+            revenue += item.total;
+            averageCostSummary += item.averageCost;
+          })
+          
+        });
+        var grossProfit = revenue - averageCostSummary;
+        var netProfit = grossProfit - ((grossProfit * 13) / 100);
+        console.log(revenue);
+        console.log(grossProfit);
+        console.log(netProfit);
+      }
+      next();
+    });
+
+    // if(ctx.req.accessToken) {
+    //   next();
+    // } else {
+    //   next(new Error('must be logged in to update'))
+    // }
+  });
+
   Salesinvoice.remoteMethod('countOpenedInvoices', {
     http: {verb: 'get'},
     returns: {arg: 'openedInvoices', type: 'Object', 'root': true},

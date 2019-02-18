@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AdminRoutingModule } from './admin-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
 import {
   MatCardModule,
   MatToolbarModule,
@@ -81,7 +81,9 @@ import { SaleSnackbarComponent } from './admin-sale-edit/sale-snackbar/sale-snac
     MatTooltipModule,
     DashboardSharedModule,
     StubSharedModule,
-    NotFoundSharedModule
+    NotFoundSharedModule,
+    SatDatepickerModule,
+    SatNativeDateModule
   ],
   declarations: [
     AdminItemEditComponent,
