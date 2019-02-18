@@ -253,8 +253,10 @@ export class AdminService {
     .set('filter[limit]', pageSize.toString())
     .set('filter[order]', order)
     .set('filter[limit]',  pageSize.toString() )
-    .set('filter[skip]', offset.toString());
-
+    .set('filter[skip]', offset.toString())
+    .set('filter[where][openedAt][between][0]', startDate)
+    .set('filter[where][openedAt][between][1]', endDate);
+    
     if (filter === 'closed' || filter === 'opened') {
       params = params.set('filter[where][state]', filter);
     }
