@@ -47,10 +47,7 @@ module.exports = function(Salesinvoice) {
     });
   };
 
-  Salesinvoice.beforeRemote('find', function(ctx, unused, next) {
-    console.log('', ctx.args.filter.where.openedAt.between[0]);
-    console.log('', ctx.args.filter.where.openedAt.between[1]);
-
+  Salesinvoice.afterRemote('find', function(ctx, unused, next) {
     Salesinvoice.find({where:
     {openedAt:
     {between: [
@@ -74,9 +71,16 @@ module.exports = function(Salesinvoice) {
         });
         var grossProfit = revenue - averageCostSummary;
         var netProfit = grossProfit - ((grossProfit * 13) / 100);
-        console.log(revenue);
-        console.log(grossProfit);
-        console.log(netProfit);
+        // ctx.result.push({revenue: revenue});
+        // ctx.result.push({grossProfit: grossProfit});
+        // ctx.result.push({netProfit: netProfit});
+        var saleInvoices = ctx.result;
+        ctx.result = {};
+        ctx.result.result = saleInvoices;
+        ctx.result.revenue = revenue;
+        ctx.result.grossProfit = grossProfit;
+        ctx.result.netProfit = netProfit;
+        console.log('', ctx.res);
       }
       next();
     });
