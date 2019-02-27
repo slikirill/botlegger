@@ -7,7 +7,7 @@ module.exports = function(Relpurchaseinvoiceitem) {
     if (fullText === undefined) {
       Relpurchaseinvoiceitem.find({where: {purchaseInvoiceId: {like: purchaseInvoiceId}},
         include: {relation: 'item',
-          scope: {fields: ['name', 'unit']}}},
+          scope: {fields: ['name', 'unit', 'image']}}},
         (err, data) => {
           if (err) {
             return console.log(err);
@@ -16,7 +16,7 @@ module.exports = function(Relpurchaseinvoiceitem) {
           }
         });
     } else {
-      Item.find({fields: {id: true, name: true, unit: true},
+      Item.find({fields: {id: true, name: true, unit: true, image: true},
         where: {name: {like: fullText, options: 'i'}}}, (err, items) => {
         if (err) {
           return err;
@@ -41,6 +41,7 @@ module.exports = function(Relpurchaseinvoiceitem) {
                     'name': item.name,
                     'unit': item.unit,
                     'id': item.id,
+                    'image': item.image,
                   },
                 });
               } else {
@@ -54,6 +55,7 @@ module.exports = function(Relpurchaseinvoiceitem) {
                     'name': item.name,
                     'unit': item.unit,
                     'id': item.id,
+                    'image': item.image,
                   },
                 });
               }

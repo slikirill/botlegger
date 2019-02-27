@@ -5,25 +5,22 @@ import { StubComponent } from './../../shared/stub/stub.component';
 import { DashboardComponent } from './../../shared/dashboard/dashboard.component';
 import { NotFoundComponent } from './../../shared/not-found/not-found.component';
 import { WaiterOrderListComponent } from './waiter-order-list/waiter-order-list.component';
-import { WaiterBillListComponent } from './waiter-bill-list/waiter-bill-list.component';
-import { WaiterBillEditComponent } from './waiter-bill-edit/waiter-bill-edit.component';
+import { WaiterSaleListComponent } from './waiter-sale-list/waiter-sale-list.component';
+import { WaiterSaleEditComponent } from './waiter-sale-edit/waiter-sale-edit.component';
 
 const routes: Routes = [
   {
     path: '',
     component: DashboardComponent,
     children: [
-      { path: 'order', component: StubComponent ,
+      { path: 'sale', component: StubComponent ,
         children: [
-          { path: '', component: WaiterOrderListComponent },
-          { path: ':filter/show', component: WaiterOrderListComponent },
-        ]
-      },
-      { path: 'bill', component: StubComponent ,
-        children: [
-          { path: '', component: WaiterBillListComponent },
-          { path: ':id/edit', component: WaiterBillEditComponent },
-          { path: ':filter/show', component: WaiterBillListComponent },
+          { path: '', component: WaiterSaleListComponent },
+          { path: 'new', component: WaiterSaleEditComponent },
+          { path: ':id/edit', component: WaiterSaleEditComponent},
+          { path: ':filter/show', component: WaiterSaleListComponent },
+          { path: 'order', component: WaiterOrderListComponent},
+          { path: 'order/:filter/show', component: WaiterOrderListComponent },
         ]
       },
       {path: '404', component: NotFoundComponent},

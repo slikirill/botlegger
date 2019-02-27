@@ -20,7 +20,7 @@ export class AuthService {
     this.http.post('http://localhost:3000/api/CustomerUsers/signin', { email, password}).subscribe(result => {  
     localStorage.setItem('accessToken', JSON.stringify(result));
       if (this.validateRole()) {
-        this.router.navigate([this.getRole()]);
+        this.router.navigate(['/' + this.getRole() + '/sale/order']);
       } else {
         this.logout();
       }

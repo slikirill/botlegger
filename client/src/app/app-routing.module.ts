@@ -8,7 +8,7 @@ import { SignoutComponent } from './auth/signout/signout.component';
 
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/signin', pathMatch: 'full' },
+  { path: '', component: SigninComponent },
   { path: 'admin',
     loadChildren: './role/admin/admin.module#AdminModule',
     canActivate: [RoleGuard],
@@ -20,7 +20,7 @@ const appRoutes: Routes = [
   },
   { path: 'barman',
     loadChildren: './role/barman/barman.module#BarmanModule',
-    // canActivate: [RoleGuard],
+    canActivate: [RoleGuard],
     data: {
       expectedRole: 'barman',
       preload: false,
@@ -28,7 +28,7 @@ const appRoutes: Routes = [
     }
   },
   { path: 'chef', loadChildren: './role/chef/chef.module#ChefModule',
-    // canActivate: [RoleGuard],
+    canActivate: [RoleGuard],
     data: {
       expectedRole: 'chef',
       preload: false,
@@ -37,7 +37,7 @@ const appRoutes: Routes = [
   },
   { path: 'waiter',
     loadChildren: './role/waiter/waiter.module#WaiterModule',
-    // canActivate: [RoleGuard],
+    canActivate: [RoleGuard],
     data: {
       expectedRole: 'waiter',
       preload: false,

@@ -43,11 +43,11 @@
   },
   "validations": [],
   "relations": {
-
     "item": {
-      "type": "belongsTo",
-      "model": "SalesInvoice",
-      "foreignKey": ""
+      "type": "hasOne",
+      "model": "Item",
+      "foreignKey": "id",
+      "primaryKey": "itemId"
     }
   },
   "acls": [
@@ -194,6 +194,13 @@
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "listOrders"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "waiter",
       "permission": "ALLOW",
       "property": "listOrders"
     },

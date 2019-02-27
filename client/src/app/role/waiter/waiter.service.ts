@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 
-import { Item } from './../../model/Item'; 
+import { Item } from './../../model/Item';
 import { Order } from './../../model/Order';
 import { SaleInvoice } from './../../model/SaleInvoice';
 
@@ -24,8 +24,6 @@ export class WaiterService {
   public items: BehaviorSubject<Item[]>  = new BehaviorSubject<Item[]>(null);
   public items$: Observable<Item[]> = this.items.asObservable();
 
-  public orders: BehaviorSubject<Order[]>  = new BehaviorSubject<Order[]>(null);
-  public orders$: Observable<Order[]> = this.orders.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -57,27 +55,34 @@ export class WaiterService {
 
   public serveOrder(id, index) {
     return this.http.get('http://localhost:3000/api/relSalesInvoiceItems/serveOrder?id=' + id
-    ).subscribe(
-      () => this.orders.value[index].state = 'served'
+    ).pipe(
+      map(() => {
+        return 'served';
+      })
     );
   }
 
   public getOrders(filter: string | Boolean = false) {
-    timer(0, 1000 * 30).pipe(
-      switchMap(() => this.http.get<Order[]>('http://localhost:3000/api/relSalesInvoiceItems/listOrders', {
-          params: new HttpParams()
-            .set('filter', filter.toString())
-        }))
-    ).subscribe((data: Order[]) => this.orders.next(data));
+    return this.http.get<Order[]>('http://localhost:3000/api/relSalesInvoiceItems/listOrders', {
+      params: new HttpParams()
+        .set('filter', filter.toString())
+    }).pipe(
+      map(data => {
+        return(data);
+      })
+    );
   }
 
   public findSaleInvoices(
     filter: string | Boolean = false,
-    order = 'id ASC',
+    order = 'openedAt ASC',
     pageNumber = 0,
     pageSize = 1,
-    startDate = null,
-    endDate = null) {
+    openedDateBegin = null,
+    openedDateEnd = null,
+    closedDateBegin = null,
+    closedDateEnd = null,
+    ) {
     let offset = 0;
     if (pageNumber === 0) {
       offset = 0;
@@ -85,20 +90,35 @@ export class WaiterService {
       offset = pageSize * pageNumber + 1;
     }
 
+    const openedFilter = openedDateBegin === null ? {} : {
+      'openedAt': {
+        between: [openedDateBegin, openedDateEnd]
+      }
+    };
 
-    const fil = undefined;
-    startDate = startDate === null ? '0000-09-30T21:00:00.000Z' : startDate.toISOString();
-    endDate = endDate === null ? '9999-09-30T21:00:00.000Z' : endDate.toISOString();
+    const closedFilter = closedDateBegin === null ? {} : {
+      'closedAt': {
+        between: [closedDateBegin, closedDateEnd]
+      }
+    };
 
-    let params = new HttpParams()
-    .set('filter[limit]', pageSize.toString())
-    .set('filter[order]', order)
-    .set('filter[limit]',  pageSize.toString() )
-    .set('filter[skip]', offset.toString());
+    const stateFilter = !filter ? {} : {state: filter};
 
-    if (filter === 'closed' || filter === 'opened') {
-      params = params.set('filter[where][state]', filter);
-    }
+    const requestFilter = {
+      limit: pageSize.toString(),
+      order: order,
+      skip: offset.toString(),
+      where: {
+        and: [
+          openedFilter,
+          closedFilter,
+          stateFilter
+        ]
+      }
+    };
+
+    const params = new HttpParams()
+    .set('filter', JSON.stringify(requestFilter));
 
     return this.http.get('http://localhost:3000/api/SalesInvoices',
     {
@@ -108,10 +128,8 @@ export class WaiterService {
         'Prefer': 'count=exact'
       }),
       params: params
-
     }).pipe(
       map(data => {
-        // console.log(data);
         return data;
       })
     );
@@ -125,8 +143,8 @@ export class WaiterService {
     );
   }
 
-  public getSaleInvoice(id: string): Observable<SaleInvoice[]>  {
-    return this.http.get<SaleInvoice[]>('http://localhost:3000/api/SalesInvoices/' + id.toString()).pipe(
+  public getSaleInvoice(id: string): Observable<SaleInvoice>  {
+    return this.http.get<SaleInvoice>('http://localhost:3000/api/SalesInvoices/' + id.toString()).pipe(
       map(data => {
         return data;
       })

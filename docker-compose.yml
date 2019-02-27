@@ -4,11 +4,14 @@ services:
     build: ./client
     container_name: client
     ports:
-    - '80:4200'
+    - '4200:4200'
     volumes:
       - ./client:/usr/src/app
+      #- ./api/tmp/storage/images:/usr/src/app/src/assets/images/items
     depends_on: 
       - api
+    networks:
+      - my-net
   api:
     build: ./api
     container_name: api

@@ -6,11 +6,52 @@ module.exports = function(Salesinvoice) {
       id: salesInvoiceId,
       state: 'closed',
       closedAt: new Date(),
-    }, function() {
-      let result = {add: true};
+    }, function(err) {
+      if (err)
+        return console.log(err);
+      let result = true;
       cb(null, result);
     });
   };
+
+  Salesinvoice.countOpenedInvoices = function(cb) {
+    Salesinvoice.count({state: 'opened'}, (err, count) => {
+      if (err)
+        return console.log(err);
+      cb(null, count);
+    });
+  };
+
+  Salesinvoice.afterRemote('find', function(ctx, unused, next) {
+    var filter = ctx.args.filter.where.and;
+    Salesinvoice.find({
+      where: {and: filter},
+      include: {relation: 'itemsSales'},
+    }, function(err, data) {
+      if (err) {
+        return console.log(err);
+      } else {
+        let revenue = 0;
+        let averageCostSummary = 0;
+        data.forEach(invoice => {
+          var p = invoice.toJSON();
+          p.itemsSales.forEach(item => {
+            revenue += item.total;
+            averageCostSummary += item.averageCost;
+          });
+        });
+        var grossProfit = revenue - averageCostSummary;
+        var netProfit = grossProfit - ((grossProfit * 13) / 100);
+        var saleInvoices = ctx.result;
+        ctx.result = {};
+        ctx.result.result = saleInvoices;
+        ctx.result.revenue = revenue;
+        ctx.result.grossProfit = grossProfit;
+        ctx.result.netProfit = netProfit;
+      }
+      next();
+    });
+  });
 
   Salesinvoice.listSalesInvoices = function(cb) {
     Salesinvoice.find({}, function() {
@@ -38,60 +79,6 @@ module.exports = function(Salesinvoice) {
       {arg: 'result', type: 'Object', 'root': true},
     ],
   });
-
-  Salesinvoice.countOpenedInvoices = function(cb) {
-    Salesinvoice.count({state: 'opened'}, (err, count) => {
-      if (err)
-        return console.log(err);
-      cb(null, count);
-    });
-  };
-
-  Salesinvoice.afterRemote('find', function(ctx, unused, next) {
-    Salesinvoice.find({where:
-    {openedAt:
-    {between: [
-      ctx.args.filter.where.openedAt.between[0],
-      ctx.args.filter.where.openedAt.between[1],
-    ]},
-    },
-      include: {relation: 'item'}}, function(err, data) {
-      if (err) {
-        return console.log(err);
-      } else {
-        let revenue = 0;
-        let averageCostSummary = 0;
-        data.forEach(invoice => {
-          var p = invoice.toJSON();
-          p.item.forEach(item => {
-            revenue += item.total;
-            averageCostSummary += item.averageCost;
-          })
-          
-        });
-        var grossProfit = revenue - averageCostSummary;
-        var netProfit = grossProfit - ((grossProfit * 13) / 100);
-        // ctx.result.push({revenue: revenue});
-        // ctx.result.push({grossProfit: grossProfit});
-        // ctx.result.push({netProfit: netProfit});
-        var saleInvoices = ctx.result;
-        ctx.result = {};
-        ctx.result.result = saleInvoices;
-        ctx.result.revenue = revenue;
-        ctx.result.grossProfit = grossProfit;
-        ctx.result.netProfit = netProfit;
-        console.log('', ctx.res);
-      }
-      next();
-    });
-
-    // if(ctx.req.accessToken) {
-    //   next();
-    // } else {
-    //   next(new Error('must be logged in to update'))
-    // }
-  });
-
   Salesinvoice.remoteMethod('countOpenedInvoices', {
     http: {verb: 'get'},
     returns: {arg: 'openedInvoices', type: 'Object', 'root': true},

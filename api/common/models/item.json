@@ -154,6 +154,13 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
+      "principalId": "waiter",
+      "permission": "ALLOW",
+      "property": "searchMenuItems"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW",
       "property": "countStopList"

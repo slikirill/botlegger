@@ -30,10 +30,11 @@
   },
   "validations": [],
   "relations": {
-    "item": {
+    "itemsSales": {
       "type": "hasMany",
       "model": "relSalesInvoiceItem",
-      "foreignKey": "salesInvoiceId"
+      "foreignKey": "salesInvoiceId",
+      "primaryKey": "id"
     }
   },
   "acls": [
@@ -81,7 +82,21 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
+      "principalId": "waiter",
+      "permission": "ALLOW",
+      "property": "replaceOrCreate"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
       "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "closeSaleInvoice"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "waiter",
       "permission": "ALLOW",
       "property": "closeSaleInvoice"
     },

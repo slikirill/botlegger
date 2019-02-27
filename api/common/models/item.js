@@ -118,7 +118,7 @@ module.exports = function(Item) {
   };
 
   Item.updateQuantity = function(data) {
-    console.log('', data);
+    //console.log('', data);
     async.each(data, function(item, callback) {
       Item.upsertWithWhere(
         {
@@ -130,7 +130,7 @@ module.exports = function(Item) {
           callback();
         });
     });
-    console.log('', data);
+    //console.log('', data);
   };
 
 

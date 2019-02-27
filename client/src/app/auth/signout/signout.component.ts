@@ -12,7 +12,7 @@ export class SignoutComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.authService.deleteToken();
+    this.authService.logout();
   }
 
 }

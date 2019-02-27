@@ -12,10 +12,10 @@ const routes: Routes = [
     path: '',
     component: DashboardComponent,
     children: [
-      { path: 'order', component: StubComponent ,
+      { path: 'sale', component: StubComponent ,
         children: [
-          { path: '', component: ChefOrderListComponent },
-          { path: ':filter/show', component: ChefOrderListComponent },
+          { path: 'order', component: ChefOrderListComponent },
+          { path: 'order/:filter/show', component: ChefOrderListComponent },
         ]
       },
       {path: '404', component: NotFoundComponent},

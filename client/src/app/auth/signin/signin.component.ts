@@ -14,11 +14,11 @@ export class SigninComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(this.authService.isAuthenticated());
     if (this.authService.isAuthenticated()) {
-      this.router.navigate([this.authService.getRole()]);
+      this.router.navigate( ['/' + this.authService.getRole() + '/sale/order']);
+    } else {
+      this.initForm();
     }
-    this.initForm();
   }
 
   initForm() {

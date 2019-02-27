@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { WaiterRoutingModule } from './waiter-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
 
 
 
@@ -35,10 +35,10 @@ import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS
 } from '@angular/material';
 
-import { WaiterSaleSnackbarComponent } from './waiter-bill-edit/sale-snackbar/sale-snackbar.component';
+import { WaiterSaleSnackbarComponent } from './waiter-sale-edit/sale-snackbar/sale-snackbar.component';
 import { WaiterOrderListComponent } from './waiter-order-list/waiter-order-list.component';
-import { WaiterBillListComponent } from './waiter-bill-list/waiter-bill-list.component';
-import { WaiterBillEditComponent } from './waiter-bill-edit/waiter-bill-edit.component';
+import { WaiterSaleListComponent } from './waiter-sale-list/waiter-sale-list.component';
+import { WaiterSaleEditComponent } from './waiter-sale-edit/waiter-sale-edit.component';
 import { StubSharedModule } from './../../shared/stub/stub.shared.module';
 import { DashboardSharedModule } from './../../shared/dashboard/dashboard.shared.module';
 import { NotFoundSharedModule } from './../../shared/not-found/not-found.shared.module';
@@ -77,12 +77,14 @@ import { NotFoundSharedModule } from './../../shared/not-found/not-found.shared.
     MatTooltipModule,
     DashboardSharedModule,
     StubSharedModule,
-    NotFoundSharedModule
+    NotFoundSharedModule,
+    SatDatepickerModule,
+    SatNativeDateModule
   ],
   declarations: [
     WaiterOrderListComponent,
-    WaiterBillListComponent,
-    WaiterBillEditComponent,
+    WaiterSaleListComponent,
+    WaiterSaleEditComponent,
     WaiterSaleSnackbarComponent,
 
   ],

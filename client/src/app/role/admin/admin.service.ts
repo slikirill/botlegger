@@ -21,14 +21,10 @@ import {
   providedIn: 'root'
 })
 export class AdminService {
-  private purchaseInvoice: PurchaseInvoice[];
-  private category: Category[];
 
   public items: BehaviorSubject<Item[]>  = new BehaviorSubject<Item[]>(null);
   public items$: Observable<Item[]> = this.items.asObservable();
 
-  public orders: BehaviorSubject<Order[]>  = new BehaviorSubject<Order[]>(null);
-  public orders$: Observable<Order[]> = this.orders.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -70,22 +66,28 @@ export class AdminService {
   }
 
   public progressOrder(id, index) {
-    return this.http.get('http://localhost:3000/api/relSalesInvoiceItems/progressOrder?id=' + id).subscribe(
-      () => this.orders.value[index].state = 'progress'
+    return this.http.get<Order>('http://localhost:3000/api/relSalesInvoiceItems/progressOrder?id=' + id).pipe(
+      map(() => {
+        return 'progress';
+      })
     );
   }
 
   public readyOrder(id, index) {
     return this.http.get('http://localhost:3000/api/relSalesInvoiceItems/readyOrder?id=' + id
-    ).subscribe(
-      () => this.orders.value[index].state = 'ready'
+    ).pipe(
+      map(() => {
+        return 'ready';
+      })
     );
   }
 
   public serveOrder(id, index) {
     return this.http.get('http://localhost:3000/api/relSalesInvoiceItems/serveOrder?id=' + id
-    ).subscribe(
-      () => this.orders.value[index].state = 'served'
+    ).pipe(
+      map(() => {
+        return 'served';
+      })
     );
   }
 
@@ -93,14 +95,16 @@ export class AdminService {
     return this.http.get<Order[]>('http://localhost:3000/api/relSalesInvoiceItems/listOrders', {
       params: new HttpParams()
         .set('filter', filter.toString())
-    }).subscribe(
-      (data: Order[]) => this.orders.next(data)
+    }).pipe(
+      map(data => {
+        return(data);
+      })
     );
   }
 
 
-  public getItem(id): Observable<Item[]> {
-    return this.http.get<Item[]>('http://localhost:3000/api/Items/' + id.toString()).pipe(
+  public getItem(id): Observable<Item> {
+    return this.http.get<Item>('http://localhost:3000/api/Items/' + id.toString()).pipe(
       map(data => {
         return data;
       })
@@ -149,15 +153,15 @@ export class AdminService {
     );
   }
 
-  public search(recipeId, fulltext = '') {
-    return this.http.get('http://localhost:3000/api/Ingredients/search?recipeId=' + recipeId + '&fullText=' + fulltext).pipe(
+  public search(recipeId, fulltext = ''): Observable<Ingredient[]> {
+    return this.http.get<Ingredient[]>('http://localhost:3000/api/Ingredients/search?recipeId=' + recipeId + '&fullText=' + fulltext).pipe(
       map(data => {
         return data;
       })
     );
   }
 
-  public findPurchaseInvoices(filter = '', order = 'id ASC', pageNumber = 0, pageSize = 1, startDate = null, endDate = null) {
+  public findPurchaseInvoices(order = 'id ASC', pageNumber = 0, pageSize = 1, startDate = null, endDate = null) {
     let offset = 0;
     if (pageNumber === 0) {
       offset = 0;
@@ -189,8 +193,8 @@ export class AdminService {
     );
   }
 
-  public getPurchaseInvoice(id: string): Observable<PurchaseInvoice[]>  {
-    return this.http.get<PurchaseInvoice[]>('http://localhost:3000/api/PurchaseInvoices/' + id.toString()).pipe(
+  public getPurchaseInvoice(id: string): Observable<PurchaseInvoice>  {
+    return this.http.get<PurchaseInvoice>('http://localhost:3000/api/PurchaseInvoices/' + id.toString()).pipe(
       map(data => {
         return data;
       })
@@ -208,7 +212,6 @@ export class AdminService {
   public updatePurchaseInvoiceItem(item) {
     return this.http.post('http://localhost:3000/api/relPurchaseInvoiceItems/updatePurchaseInvoiceItem', {item: item}).pipe(
       map(data => {
-
         return data;
       })
     );
@@ -247,28 +250,35 @@ export class AdminService {
       offset = pageSize * pageNumber + 1;
     }
 
-    openedDateBegin = openedDateBegin === null ? '0000-09-30T21:00:00.000Z' : openedDateBegin.toISOString();
-    openedDateEnd = openedDateEnd === null ? '9999-09-30T21:00:00.000Z' : openedDateEnd.toISOString();
+    const openedFilter = openedDateBegin === null ? {} : {
+      'openedAt': {
+        between: [openedDateBegin, openedDateEnd]
+      }
+    };
 
-    closedDateBegin = closedDateBegin === null ? '0000-09-30T21:00:00.000Z' : closedDateBegin.toISOString();
-    closedDateEnd = closedDateEnd === null ? '9999-09-30T21:00:00.000Z' : closedDateEnd.toISOString();
+    const closedFilter = closedDateBegin === null ? {} : {
+      'closedAt': {
+        between: [closedDateBegin, closedDateEnd]
+      }
+    };
 
+    const stateFilter = !filter ? {} : {state: filter};
 
-    console.log('', openedDateBegin)
+    const requestFilter = {
+      limit: pageSize.toString(),
+      order: order,
+      skip: offset.toString(),
+      where: {
+        and: [
+          openedFilter,
+          closedFilter,
+          stateFilter
+        ]
+      }
+    };
 
-    console.log('', openedDateEnd)
-    let params = new HttpParams()
-    .set('filter[limit]', pageSize.toString())
-    .set('filter[order]', order)
-    .set('filter[limit]',  pageSize.toString() )
-    .set('filter[skip]', offset.toString())
-    .set('filter[where][openedAt][between][0]', openedDateBegin)
-    .set('filter[where][openedAt][between][1]', openedDateEnd)
-    .set('filter[where][closedAt][between][0]', closedDateBegin)
-    .set('filter[where][closedAt][between][1]', closedDateEnd);
-    if (filter === 'closed' || filter === 'opened') {
-      params = params.set('filter[where][state]', filter);
-    }
+    const params = new HttpParams()
+    .set('filter', JSON.stringify(requestFilter));
 
     return this.http.get('http://localhost:3000/api/SalesInvoices',
     {
@@ -278,25 +288,23 @@ export class AdminService {
         'Prefer': 'count=exact'
       }),
       params: params
-
     }).pipe(
       map(data => {
-        // console.log(data);
         return data;
       })
     );
   }
 
-  public getSaleInvoice(id: string): Observable<SaleInvoice[]>  {
-    return this.http.get<SaleInvoice[]>('http://localhost:3000/api/SalesInvoices/' + id.toString()).pipe(
+  public getSaleInvoice(id: string): Observable<SaleInvoice>  {
+    return this.http.get<SaleInvoice>('http://localhost:3000/api/SalesInvoices/' + id.toString()).pipe(
       map(data => {
         return data;
       })
     );
   }
 
-  public searchItemsSaleInvoice(id: string, fulltext = '') {
-    return this.http.get('http://localhost:3000/api/relSalesInvoiceItems/searchItemsSalesInvoice?salesInvoiceId=' + id.toString() + '&fullText=' + fulltext).pipe(
+  public searchItemsSaleInvoice(id: string, fulltext = ''): Observable<Item[]> {
+    return this.http.get<Item[]>('http://localhost:3000/api/relSalesInvoiceItems/searchItemsSalesInvoice?salesInvoiceId=' + id.toString() + '&fullText=' + fulltext).pipe(
       map(data => {
         return data;
       })

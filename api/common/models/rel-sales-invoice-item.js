@@ -6,7 +6,7 @@ module.exports = function(Relsalesinvoiceitem) {
     console.log(salesInvoiceId);
     var Item = app.models.Item;
     if (fullText === undefined) {
-      Relsalesinvoiceitem.find({where: {salesInvoiceId: {like: salesInvoiceId}},
+      Relsalesinvoiceitem.find({where: {salesInvoiceId: salesInvoiceId},
         include: {relation: 'item',
           scope: {fields: ['name', 'unit', 'image']}}},
         (err, data) => {
@@ -22,8 +22,12 @@ module.exports = function(Relsalesinvoiceitem) {
         if (err) {
           return err;
         } else {
+
+          console.log('', items)
           let request = this.genSearchRequest(items, salesInvoiceId);
           Relsalesinvoiceitem.find(request, (err, invoices) => {
+
+            console.log('', invoices)
             var res = [];
             invoices.forEach((invoice) => {
               res[invoice.itemId] = invoice;
@@ -63,7 +67,7 @@ module.exports = function(Relsalesinvoiceitem) {
     request.where = {};
     request.where.or = [];
     items.forEach((item) => {
-      request.where.or.push({and: [{itemId: {like: item.id.toString()}}, {salesInvoiceId: {like: salesInvoiceId.toString()}}]});
+      request.where.or.push({and: [{itemId: item.id}, {salesInvoiceId: salesInvoiceId}]});
     });
     return (request);
   };
@@ -212,13 +216,13 @@ module.exports = function(Relsalesinvoiceitem) {
         },
       },
     },
-      (err, data) => {
+      (err, data) => { 
         if (err) {
           return console.log(err);
         } else {
-          callback(null, data);
+          callback(null, data);  
         }
-      });
+      }); 
   };
 
   Relsalesinvoiceitem.updateTotal = function(item, cb) {
@@ -256,7 +260,6 @@ module.exports = function(Relsalesinvoiceitem) {
           return console.log(err);
         } else {
           var res = [];
-          // var requestedPortions = [];
           var availablePortions = [];
           data.forEach((it, key) => {
             // requestedPortions.push(parseInt((it.ingredient().quantity) / (it.recipeQuantity * item.quantity)));
@@ -285,11 +288,11 @@ module.exports = function(Relsalesinvoiceitem) {
                   executor: data[0].executor,
                   total: data[0].sellingPrice * item.quantity,
                 }, (err, data) => {
-                  // console.log('', err);
-
-                  // console.log('', 'saved')
-                  Relsalesinvoiceitem.find({where: {salesInvoiceId: {like: item.salesInvoiceId}}},
+                  Relsalesinvoiceitem.find({where: {salesInvoiceId: item.salesInvoiceId}},
                     (err, items) => {
+                      if (err) {
+                        return console.log(err);
+                      }
                       let total = 0;
                       if (err) {
                         return console.log(err);
@@ -298,7 +301,6 @@ module.exports = function(Relsalesinvoiceitem) {
                           var res = item.toJSON();
                           total += res.total;
                         });
-                        console.log('', item.salesInvoiceId);
                         SalesInvoice.upsert({
                           id: item.salesInvoiceId,
                           total: total,
@@ -311,8 +313,6 @@ module.exports = function(Relsalesinvoiceitem) {
                 });
               });
           }
-          // console.log('requestedPortions', Math.min.apply(Math, requestedPortions));
-          // console.log('availablePortions', Math.min.apply(Math, availablePortions));
         }
       });
   };
