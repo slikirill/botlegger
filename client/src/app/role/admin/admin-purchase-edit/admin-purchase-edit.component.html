@@ -1,0 +1,104 @@
+<div class="mcard_white" fxLayout="column" >
+  <h3 *ngIf="purchaseInvoiceForm && PurchaseInvoice">Purchase invoice </h3>
+
+    <div *ngIf="PurchaseInvoice$ | async as PurchaseInvoice">
+      <p>Supplier: {{PurchaseInvoice.supplierId}}</p>
+      <p>Date: {{PurchaseInvoice.date | date: 'fullDate'}}</p>
+      <p>Profiled: {{PurchaseInvoice.profiled}}</p>
+      <p>Total: {{total| currency}}</p>
+  </div>
+
+
+  <form fxLayout="column" fxHide *ngIf="SaleInvoice$ | async" [formGroup]="purchaseInvoiceForm" (ngSubmit)="onUpdate()">
+    <ng-template *ngIf="!editMode">
+      <input matInput formControlName="id">
+    </ng-template>
+    <div  fxLayout="row"  fxFill fxLayoutAlign="space-between center">
+      <mat-form-field fxFlex="32">
+        <input matInput placeholder="Supplier" formControlName="supplierId">
+        <mat-error *ngIf="purchaseInvoiceForm.controls['supplierId'].hasError('required')">
+          Supplier is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="32">
+        <input matInput placeholder="Total" formControlName="total">
+        <mat-error *ngIf="purchaseInvoiceForm.controls['total'].hasError('required')">
+          Total is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="date"  placeholder="Date" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="date">
+          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
+        <mat-error *ngIf="purchaseInvoiceForm.controls['date'].hasError('required')">
+          Date is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+  </form>
+
+
+  <div class="buttons-container" fxLayout="column">
+      <div  class="buttons" *ngIf="show" fxLayout="column" >
+          <div class="mat-fab-div"  (click)=" show = !show; onUpdate() " fxFlex="32">
+              <button form="ngForm" color="primary" mat-mini-fab aria-label="Save">
+                <mat-icon>save</mat-icon>
+              </button>
+          </div>
+          <div class="mat-fab-div" (click)=" show = !show; onProfile() " fxFlex="32">
+              <button mat-mini-fab  aria-label="Profile">
+                <mat-icon>archive</mat-icon>
+              </button>
+            </div>
+        </div>
+      <button mat-fab color="primary" [disabled]="profiled" (click)=" show = !show "><mat-icon aria-label="Options">more_vert</mat-icon></button>
+    </div>
+</div>
+<div *ngIf="editMode">
+  <div class="mcard">
+    <form *ngIf="items$ | async as items" [formGroup]="itemsForm">
+        <div  formArrayName="items"   fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap=".1%" fxLayoutGap.lt-md=".9%" fxLayoutWrap fxLayoutAlign="space-around center"   >
+          <mat-card class="card" style="margin-bottom: 1em;" fxFill fxFlex="49%" fxFlex.lt-md="99.5%" 
+          *ngFor="let itemCtrl of itemsForm.get('items').controls; let i = index"
+          [formGroupName]="i">
+              <mat-card-header fxLayout="row">
+                  <div  fxLayout="row" fxFlex="70">
+                      <div mat-card-avatar [ngStyle]="{'background-image':'url(/backend/api/storages/images/download/'+items[i].item.image+')'}" style="background-size: cover;"></div>
+                      <div fxLayout="column"> 
+                          <mat-card-title>{{items[i].item.name}} </mat-card-title>
+                      </div>
+                      
+                  </div>
+                  
+              </mat-card-header>
+              <mat-card-footer>
+                  <div  style="padding: 5px;" fxLayout="column" fxFlex="98"  fxLayoutAlign="space-between center" >
+                  <input hidden matInput formControlName="total">
+                  <input hidden matInput formControlName="id">
+                  <input hidden matInput formControlName="itemId">
+                  <input hidden matInput formControlName="purchaseInvoiceId">
+                  <mat-form-field fxFlex="98">
+                    <input matInput placeholder="Quantity" formControlName="quantity" (focusout)="onUpdateItem(itemCtrl.getRawValue(), i)" (keyup)="onCountTotal(itemCtrl.getRawValue(), i)">
+                    <span matSuffix>{{items[i].item.unit}}</span>
+                  </mat-form-field >
+                  <mat-form-field fxFlex="98">
+                    <input matInput placeholder="Price" formControlName="purchasePrice" (focusout)="onUpdateItem(itemCtrl.getRawValue(), i)" (keyup)="onCountTotal(itemCtrl.getRawValue(), i)">
+                    <span matSuffix>&#x24;</span>
+                  </mat-form-field>
+                  <mat-form-field fxFlex="98">
+                      <input matInput placeholder="Total" formControlName="total">
+                      <span matSuffix>&#x24;</span>
+                    </mat-form-field>
+                  </div>
+              </mat-card-footer>
+          </mat-card>
+        </div>
+    </form>
+    </div>
+  </div>

@@ -1,0 +1,121 @@
+<div class="mcard_white" fxLayout="column">
+  <h3>Sale invoice </h3>
+
+  <div *ngIf="SaleInvoice$ | async as SaleInvoice">
+      <p>Visitor: {{SaleInvoice.visitorId}}</p>
+      <p>State: {{SaleInvoice.state}}</p>
+      <p>Opened: {{SaleInvoice.openedAt | date: 'fullDate'}}</p>
+      <p *ngIf="SaleInvoice.closedAt">Closed: {{SaleInvoice.closedAt | date: 'fullDate'}}</p>
+      <p>Total: {{SaleInvoice.total | currency}}</p>
+  </div>
+
+  <form fxHide fxLayout="column" *ngIf="SaleInvoice$ | async" [formGroup]="saleInvoiceForm" (ngSubmit)="onUpdate()">
+    <ng-template *ngIf="!editMode">
+      <input matInput formControlName="id">
+    </ng-template>
+    <div  fxLayout="row"  fxFill fxLayoutAlign="space-between center">
+      <mat-form-field fxFlex="32">
+        <input matInput placeholder="Visitor" formControlName="visitorId">
+        <mat-error *ngIf="saleInvoiceForm.controls['visitorId'].hasError('required')">
+          Visitor is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="32">
+        <input matInput placeholder="Total" formControlName="total">
+        <mat-error *ngIf="saleInvoiceForm.controls['total'].hasError('required')">
+          Total is
+          <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div  fxLayout="row"  fxFill fxLayoutAlign="space-between center">
+      <mat-form-field>
+        <input matInput [matDatepicker]="openedAt"  placeholder="Opened at" formControlName="openedAt">
+        <mat-datepicker-toggle matSuffix [for]="openedAt">
+          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #openedAt></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="closedAt"  placeholder="Closed at" formControlName="closedAt">
+        <mat-datepicker-toggle matSuffix [for]="closedAt">
+          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #closedAt></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div class="buttons-container" fxLayout="column">
+      <div  class="buttons" *ngIf="show" fxLayout="column" >
+          <div class="mat-fab-div"  (click)=" show = !show;" fxFlex="32">
+              <button form="ngForm" color="primary" mat-mini-fab aria-label="Save" (click)="saveInvoice()">
+                <mat-icon>save</mat-icon>
+              </button>
+          </div>
+          <div class="mat-fab-div" (click)=" show = !show;" fxFlex="32">
+            <button mat-mini-fab  aria-label="Close" (click)="closeInvoice()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      <button mat-fab color="primary" [disabled]="closed" (click)=" show = !show "><mat-icon aria-label="Options">more_vert</mat-icon></button>
+    </div>
+</div>
+  <div class="mcard">
+    <form   [formGroup]="searchItemsForm">
+      <div  formArrayName="searchItems"     fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap=".3%" fxLayoutGap.lt-md=".9%" fxLayoutWrap fxLayoutAlign="space-between center">
+        <mat-card    style="margin-bottom: 1em;" fxFill fxFlex="49.5%" fxFlex.lt-md="99.5%" 
+        *ngFor="let searchItem of searchItems$ | async as searchItems; let i = index"
+        [formGroupName]="i" class="card">
+            <mat-card-header fxLayout="row">
+                <div  fxLayout="row" fxFlex="70">
+                    <div mat-card-avatar [ngStyle]="{'background-image':'url(/backend/api/storages/images/download/'+searchItem.image+')'}" style="background-size: cover;"></div>
+                    <div fxLayout="column"> 
+                        <mat-card-title>{{searchItem.name}} </mat-card-title>
+                        <mat-card-subtitle>{{searchItem.sellingPrice | currency}}&#x24;</mat-card-subtitle>
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlex fxLayoutAlign="end center">
+
+                    <input hidden matInput formControlName="quantity">
+                    <input hidden matInput formControlName="itemId">
+                    <input hidden matInput formControlName="salesInvoiceId">
+                    <div  fxLayout="row" fxLayoutAlign="space-around center" [ngSwitch]="searchItemsForm.get('searchItems').controls[i].value.quantity">
+                        <ng-template ngSwitchCase="0">
+                            <button disabled mat-icon-button (click)="changeQuantity(searchItemsForm.get('searchItems').controls[i].value, i,false)"><mat-icon aria-label="Add one">chevron_left</mat-icon></button>
+                            <button  mat-mini-fab color="accent"  [matBadge]="searchItemsForm.get('searchItems').controls[i].value.quantity" matBadgePosition="after" matBadgeColor="primary" (click)="clearSearch(searchItemsForm.get('searchItems').controls[i].value, i)">Clear</button>
+                            <button disabled mat-icon-button (click)="changeQuantity(searchItemsForm.get('searchItems').controls[i].value, i, true)"><mat-icon aria-label="Delete one">chevron_right</mat-icon></button>
+                        </ng-template>
+                        <ng-template ngSwitchDefault>
+                            <button mat-icon-button (click)="changeQuantity(searchItemsForm.get('searchItems').controls[i].value, i,false)"><mat-icon aria-label="Add one">chevron_left</mat-icon></button>
+                            <button mat-mini-fab color="primary"  [matBadge]="searchItemsForm.get('searchItems').controls[i].value.quantity" matBadgePosition="after" matBadgeColor="accent" (click)="addItem(searchItemsForm.get('searchItems').controls[i].value, i)">Add</button>
+                            <button mat-icon-button (click)="changeQuantity(searchItemsForm.get('searchItems').controls[i].value, i, true)"><mat-icon aria-label="Delete one">chevron_right</mat-icon></button>                         
+                        </ng-template>
+                    </div>
+
+                </div>
+            </mat-card-header>
+        </mat-card>
+
+      </div>
+  </form>
+    <form *ngIf="items$ | async as items" [formGroup]="itemsForm">
+      <div  formArrayName="items"   fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap=".3%" fxLayoutGap.lt-md=".9%" fxLayoutWrap fxLayoutAlign="space-between center">
+        <mat-card class="card"  style="margin-bottom: 1em;" fxFill fxFlex="49.5%" fxFlex.lt-md="99.5%"  
+        *ngFor="let itemCtrl of itemsForm.get('items').controls; let i = index"
+        [formGroupName]="i">
+            <mat-card-header fxLayout="row">
+                    <div mat-card-avatar [ngStyle]="{'background-image':'url(/backend/api/storages/images/download/'+items[i].item.image+')'}" style="background-size: cover;"></div>
+                        <mat-card-title>{{items[i].item.name}} </mat-card-title>
+                        <mat-card-subtitle>State: {{items[i].state}} <br> Quantity: {{items[i].quantity}} <br> Total: {{items[i].sellingPrice * items[i].quantity | currency}}</mat-card-subtitle>
+                    
+            </mat-card-header>
+        </mat-card>
+      </div>
+  </form>
+  </div>
+
+
+

@@ -1,0 +1,11 @@
+.mcard{
+    min-height: 87vh;
+    background-color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.card {
+    margin-bottom: 1%;
+  }
