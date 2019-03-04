@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class WaiterStatService {
-
+  public apiUrl = environment.apiUrl;
   public counterChange = new Subject<Object>();
   public counterChange$ = this.counterChange.asObservable();
   changeCounter(counterName: string, operation: string = 'increment') {
@@ -15,7 +15,7 @@ export class WaiterStatService {
   }
 
   public fetchOpenedBills(): Observable<number> {
-    return this.http.get<number>('http://localhost:3000/api/SalesInvoices/countOpenedInvoices').pipe(
+    return this.http.get<number>(this.apiUrl  + 'api/SalesInvoices/countOpenedInvoices').pipe(
       map(data => {
         return data;
       })
@@ -23,7 +23,7 @@ export class WaiterStatService {
   }
 
   public fetchNewOrders(): Observable<number> {
-    return this.http.get<number>('http://localhost:3000/api/relSalesInvoiceItems/countNew').pipe(
+    return this.http.get<number>(this.apiUrl  + 'api/relSalesInvoiceItems/countNew').pipe(
       map(data => {
         return data;
       })
@@ -31,7 +31,7 @@ export class WaiterStatService {
   }
 
   public fetchProgressOrders(): Observable<number> {
-    return this.http.get<number>('http://localhost:3000/api/relSalesInvoiceItems/countProgress').pipe(
+    return this.http.get<number>(this.apiUrl  + 'api/relSalesInvoiceItems/countProgress').pipe(
       map(data => {
         return data;
       })
@@ -39,7 +39,7 @@ export class WaiterStatService {
   }
 
   public fetchReadyOrders(): Observable<number> {
-    return this.http.get<number>('http://localhost:3000/api/relSalesInvoiceItems/countReady').pipe(
+    return this.http.get<number>(this.apiUrl  + 'api/relSalesInvoiceItems/countReady').pipe(
       map(data => {
         return data;
       })

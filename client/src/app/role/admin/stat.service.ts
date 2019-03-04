@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminStatService {
-
+  public apiUrl = environment.apiUrl;
   public counterChange = new Subject<Object>();
   public counterChange$ = this.counterChange.asObservable();
   changeCounter(counterName: string, operation: string = 'increment') {
@@ -15,7 +16,7 @@ export class AdminStatService {
   }
 
   public fetchNewOrders(): Observable<number> {
-    return this.http.get<number>('http://localhost:3000/api/relSalesInvoiceItems/countNew').pipe(
+    return this.http.get<number>(this.apiUrl  + 'api/relSalesInvoiceItems/countNew').pipe(
       map(data => {
         return data;
       })
@@ -23,7 +24,7 @@ export class AdminStatService {
   }
 
   public fetchProgressOrders(): Observable<number> {
-    return this.http.get<number>('http://localhost:3000/api/relSalesInvoiceItems/countProgress').pipe(
+    return this.http.get<number>(this.apiUrl  + 'api/relSalesInvoiceItems/countProgress').pipe(
       map(data => {
         return data;
       })
@@ -31,7 +32,7 @@ export class AdminStatService {
   }
 
   public fetchReadyOrders(): Observable<number> {
-    return this.http.get<number>('http://localhost:3000/api/relSalesInvoiceItems/countReady').pipe(
+    return this.http.get<number>(this.apiUrl  + 'api/relSalesInvoiceItems/countReady').pipe(
       map(data => {
         return data;
       })
@@ -39,7 +40,7 @@ export class AdminStatService {
   }
 
   public fetchStopList(): Observable<number> {
-    return this.http.get<number>('http://localhost:3000/api/Items/countStopList').pipe(
+    return this.http.get<number>(this.apiUrl  + 'api/Items/countStopList').pipe(
       map(data => {
         return data;
       })
@@ -47,7 +48,7 @@ export class AdminStatService {
   }
 
   public fetchOpenedBills(): Observable<number> {
-    return this.http.get<number>('http://localhost:3000/api/SalesInvoices/countOpenedInvoices').pipe(
+    return this.http.get<number>(this.apiUrl  + 'api/SalesInvoices/countOpenedInvoices').pipe(
       map(data => {
         return data;
       })
@@ -55,7 +56,7 @@ export class AdminStatService {
   }
 
   public fetchShoppingList(): Observable<number> {
-    return this.http.get<number>('http://localhost:3000/api/Items/countShoppingList').pipe(
+    return this.http.get<number>(this.apiUrl  + 'api/Items/countShoppingList').pipe(
       map(data => {
         return data;
       })

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-
+import { environment } from '../../../environments/environment';
 import { Order } from './../../model/Order';
 
 import {
@@ -15,11 +15,11 @@ import {
   providedIn: 'root'
 })
 export class ChefService {
-
+  public apiUrl = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
   public progressOrder(id, index) {
-    return this.http.get<Order>('http://localhost:3000/api/relSalesInvoiceItems/progressOrder?id=' + id).pipe(
+    return this.http.get<Order>(this.apiUrl  + 'api/relSalesInvoiceItems/progressOrder?id=' + id).pipe(
       map(() => {
         return 'progress';
       })
@@ -27,7 +27,7 @@ export class ChefService {
   }
 
   public readyOrder(id, index) {
-    return this.http.get('http://localhost:3000/api/relSalesInvoiceItems/readyOrder?id=' + id
+    return this.http.get(this.apiUrl  + 'api/relSalesInvoiceItems/readyOrder?id=' + id
     ).pipe(
       map(() => {
         return 'ready';
@@ -36,7 +36,7 @@ export class ChefService {
   }
 
   public getOrders(filter: string | Boolean = false) {
-    return this.http.get<Order[]>('http://localhost:3000/api/relSalesInvoiceItems/listOrdersChef', {
+    return this.http.get<Order[]>(this.apiUrl  + 'api/relSalesInvoiceItems/listOrdersChef', {
       params: new HttpParams()
         .set('filter', filter.toString())
     }).pipe(

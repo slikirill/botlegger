@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-
+import { environment } from '../../../environments/environment';
 
 import { Item } from './../../model/Item';
 import { Order } from './../../model/Order';
@@ -21,7 +21,7 @@ import {
   providedIn: 'root'
 })
 export class AdminService {
-
+  public apiUrl = environment.apiUrl;
   public items: BehaviorSubject<Item[]>  = new BehaviorSubject<Item[]>(null);
   public items$: Observable<Item[]> = this.items.asObservable();
 
@@ -39,7 +39,7 @@ export class AdminService {
   }
 
   public listItems(fullText: string | Boolean = false){
-    return this.http.get<Item[]>('http://localhost:3000/api/Items/listItems', {
+    return this.http.get<Item[]>(this.apiUrl  + 'api/Items/listItems', {
       params: new HttpParams()
         .set('fullText', fullText.toString())
     }).subscribe(
@@ -48,7 +48,7 @@ export class AdminService {
   }
 
   public listShoppingList(fullText: string | Boolean = false){
-    return this.http.get<Item[]>('http://localhost:3000/api/Items/listShoppingList', {
+    return this.http.get<Item[]>(this.apiUrl  + 'api/Items/listShoppingList', {
       params: new HttpParams()
         .set('fullText', fullText.toString())
     }).subscribe(
@@ -57,7 +57,7 @@ export class AdminService {
   }
 
   public listStopList(fullText: string | Boolean = false){
-    return this.http.get<Item[]>('http://localhost:3000/api/Items/listStopList', {
+    return this.http.get<Item[]>(this.apiUrl  + 'api/Items/listStopList', {
       params: new HttpParams()
         .set('fullText', fullText.toString())
     }).subscribe(
@@ -66,7 +66,7 @@ export class AdminService {
   }
 
   public progressOrder(id, index) {
-    return this.http.get<Order>('http://localhost:3000/api/relSalesInvoiceItems/progressOrder?id=' + id).pipe(
+    return this.http.get<Order>(this.apiUrl  + 'api/relSalesInvoiceItems/progressOrder?id=' + id).pipe(
       map(() => {
         return 'progress';
       })
@@ -74,7 +74,7 @@ export class AdminService {
   }
 
   public readyOrder(id, index) {
-    return this.http.get('http://localhost:3000/api/relSalesInvoiceItems/readyOrder?id=' + id
+    return this.http.get(this.apiUrl  + 'api/relSalesInvoiceItems/readyOrder?id=' + id
     ).pipe(
       map(() => {
         return 'ready';
@@ -83,7 +83,7 @@ export class AdminService {
   }
 
   public serveOrder(id, index) {
-    return this.http.get('http://localhost:3000/api/relSalesInvoiceItems/serveOrder?id=' + id
+    return this.http.get(this.apiUrl  + 'api/relSalesInvoiceItems/serveOrder?id=' + id
     ).pipe(
       map(() => {
         return 'served';
@@ -92,7 +92,7 @@ export class AdminService {
   }
 
   public getOrders(filter: string | Boolean = false) {
-    return this.http.get<Order[]>('http://localhost:3000/api/relSalesInvoiceItems/listOrders', {
+    return this.http.get<Order[]>(this.apiUrl  + 'api/relSalesInvoiceItems/listOrders', {
       params: new HttpParams()
         .set('filter', filter.toString())
     }).pipe(
@@ -104,7 +104,7 @@ export class AdminService {
 
 
   public getItem(id): Observable<Item> {
-    return this.http.get<Item>('http://localhost:3000/api/Items/' + id.toString()).pipe(
+    return this.http.get<Item>(this.apiUrl  + 'api/Items/' + id.toString()).pipe(
       map(data => {
         return data;
       })
@@ -112,7 +112,7 @@ export class AdminService {
   }
 
   public searchMenuItems(fullText): Observable<Item[]> {
-    return this.http.get<Item[]>('http://localhost:3000/api/Items/searchMenuItems?fullText=' + fullText.toString()).pipe(
+    return this.http.get<Item[]>(this.apiUrl  + 'api/Items/searchMenuItems?fullText=' + fullText.toString()).pipe(
       map(data => {
         return data;
       })
@@ -120,7 +120,7 @@ export class AdminService {
   }
 
   public getRecipe(id): Observable<Ingredient[]> {
-    return this.http.get<Ingredient[]>('http://localhost:3000/api/Items/' + id + '/recipe').pipe(
+    return this.http.get<Ingredient[]>(this.apiUrl  + 'api/Items/' + id + '/recipe').pipe(
       map(data => {
         return data;
       })
@@ -128,7 +128,7 @@ export class AdminService {
   }
 
   public updateItem(item) {
-    return this.http.post('http://localhost:3000/api/Items/replaceOrCreate',  item).pipe(
+    return this.http.post(this.apiUrl  + 'api/Items/replaceOrCreate',  item).pipe(
       map(data => {
         return data;
       })
@@ -136,7 +136,7 @@ export class AdminService {
   }
 
   public getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>('http://localhost:3000/api/Categories').pipe(
+    return this.http.get<Category[]>(this.apiUrl  + 'api/Categories').pipe(
       map(data => {
         return data;
       })
@@ -145,7 +145,7 @@ export class AdminService {
 
   public updateIngredient(ingredient) {
 
-    return this.http.post('http://localhost:3000/api/Ingredients/updateIngredient', {ingredient: ingredient}).pipe(
+    return this.http.post(this.apiUrl  + 'api/Ingredients/updateIngredient', {ingredient: ingredient}).pipe(
       map(data => {
         console.log(data);
         return data;
@@ -154,7 +154,7 @@ export class AdminService {
   }
 
   public search(recipeId, fulltext = ''): Observable<Ingredient[]> {
-    return this.http.get<Ingredient[]>('http://localhost:3000/api/Ingredients/search?recipeId=' + recipeId + '&fullText=' + fulltext).pipe(
+    return this.http.get<Ingredient[]>(this.apiUrl  + 'api/Ingredients/search?recipeId=' + recipeId + '&fullText=' + fulltext).pipe(
       map(data => {
         return data;
       })
@@ -172,7 +172,7 @@ export class AdminService {
     startDate = startDate === null ? '0000-09-30T21:00:00.000Z' : startDate.toISOString();
     endDate = endDate === null ? '9999-09-30T21:00:00.000Z' : endDate.toISOString();
 
-    return this.http.get('http://localhost:3000/api/PurchaseInvoices',
+    return this.http.get(this.apiUrl  + 'api/PurchaseInvoices',
     {
       observe: 'response',
       headers: new HttpHeaders({
@@ -194,7 +194,7 @@ export class AdminService {
   }
 
   public getPurchaseInvoice(id: string): Observable<PurchaseInvoice>  {
-    return this.http.get<PurchaseInvoice>('http://localhost:3000/api/PurchaseInvoices/' + id.toString()).pipe(
+    return this.http.get<PurchaseInvoice>(this.apiUrl  + 'api/PurchaseInvoices/' + id.toString()).pipe(
       map(data => {
         return data;
       })
@@ -202,7 +202,7 @@ export class AdminService {
   }
 
   public searchItemsPurchaseInvoice(id: string, fulltext = '') {
-    return this.http.get('http://localhost:3000/api/relPurchaseInvoiceItems/searchItemsPurchaseInvoice?purchaseInvoiceId=' + id.toString() + '&fullText=' + fulltext).pipe(
+    return this.http.get(this.apiUrl  + 'api/relPurchaseInvoiceItems/searchItemsPurchaseInvoice?purchaseInvoiceId=' + id.toString() + '&fullText=' + fulltext).pipe(
       map(data => {
         return data;
       })
@@ -210,7 +210,7 @@ export class AdminService {
   }
 
   public updatePurchaseInvoiceItem(item) {
-    return this.http.post('http://localhost:3000/api/relPurchaseInvoiceItems/updatePurchaseInvoiceItem', {item: item}).pipe(
+    return this.http.post(this.apiUrl  + 'api/relPurchaseInvoiceItems/updatePurchaseInvoiceItem', {item: item}).pipe(
       map(data => {
         return data;
       })
@@ -218,7 +218,7 @@ export class AdminService {
   }
 
   public profilePurchaseInvoice(PurchaseInvoice) {
-    return this.http.post('http://localhost:3000/api/PurchaseInvoices/profile',  {invoice: PurchaseInvoice}).pipe(
+    return this.http.post(this.apiUrl  + 'api/PurchaseInvoices/profile',  {invoice: PurchaseInvoice}).pipe(
       map(data => {
         return data;
       })
@@ -226,7 +226,7 @@ export class AdminService {
   }
 
   public updatePurchaseInvoice(PurchaseInvoice) {
-    return this.http.post('http://localhost:3000/api/PurchaseInvoices/replaceOrCreate',  PurchaseInvoice).pipe(
+    return this.http.post(this.apiUrl  + 'api/PurchaseInvoices/replaceOrCreate',  PurchaseInvoice).pipe(
       map(data => {
         return data;
       })
@@ -280,7 +280,7 @@ export class AdminService {
     const params = new HttpParams()
     .set('filter', JSON.stringify(requestFilter));
 
-    return this.http.get('http://localhost:3000/api/SalesInvoices',
+    return this.http.get(this.apiUrl  + 'api/SalesInvoices',
     {
       observe: 'response',
       headers: new HttpHeaders({
@@ -296,7 +296,7 @@ export class AdminService {
   }
 
   public getSaleInvoice(id: string): Observable<SaleInvoice>  {
-    return this.http.get<SaleInvoice>('http://localhost:3000/api/SalesInvoices/' + id.toString()).pipe(
+    return this.http.get<SaleInvoice>(this.apiUrl  + 'api/SalesInvoices/' + id.toString()).pipe(
       map(data => {
         return data;
       })
@@ -304,7 +304,7 @@ export class AdminService {
   }
 
   public searchItemsSaleInvoice(id: string, fulltext = ''): Observable<Item[]> {
-    return this.http.get<Item[]>('http://localhost:3000/api/relSalesInvoiceItems/searchItemsSalesInvoice?salesInvoiceId=' + id.toString() + '&fullText=' + fulltext).pipe(
+    return this.http.get<Item[]>(this.apiUrl  + 'api/relSalesInvoiceItems/searchItemsSalesInvoice?salesInvoiceId=' + id.toString() + '&fullText=' + fulltext).pipe(
       map(data => {
         return data;
       })
@@ -312,7 +312,7 @@ export class AdminService {
   }
 
   public updateSaleInvoiceItem(item) {
-    return this.http.post('http://localhost:3000/api/relSalesInvoiceItems/updateSalesInvoiceItem', {item: item}).pipe(
+    return this.http.post(this.apiUrl  + 'api/relSalesInvoiceItems/updateSalesInvoiceItem', {item: item}).pipe(
       map(data => {
         console.log(data);
         return data;
@@ -322,7 +322,7 @@ export class AdminService {
 
   public updateSaleInvoice(SaleInvoice) {
     console.log(SaleInvoice);
-    return this.http.post('http://localhost:3000/api/SalesInvoices/replaceOrCreate',  SaleInvoice).pipe(
+    return this.http.post(this.apiUrl  + 'api/SalesInvoices/replaceOrCreate',  SaleInvoice).pipe(
       map(data => {
         return data;
       })
@@ -330,7 +330,7 @@ export class AdminService {
   }
 
   public addItemSaleInvoice(item) {
-    return this.http.post('http://localhost:3000/api/relSalesInvoiceItems/addItemSaleInvoice', {item: item}).pipe(
+    return this.http.post(this.apiUrl  + 'api/relSalesInvoiceItems/addItemSaleInvoice', {item: item}).pipe(
       map(data => {
         return data;
       })
@@ -338,7 +338,7 @@ export class AdminService {
   }
 
   public closeSaleInvoice(id) {
-    return this.http.get('http://localhost:3000/api/SalesInvoices/closeSaleInvoice?salesInvoiceId=' + id.toString()).pipe(
+    return this.http.get(this.apiUrl  + 'api/SalesInvoices/closeSaleInvoice?salesInvoiceId=' + id.toString()).pipe(
       map(data => {
         return data;
       })
@@ -346,7 +346,7 @@ export class AdminService {
   }
 
   uploadFile(fileToUpload: any) {
-return this.http.post('http://localhost:3000/api/storages/images/upload', fileToUpload).pipe(
+return this.http.post(this.apiUrl  + 'api/storages/images/upload', fileToUpload).pipe(
   map(data => {
     return data;
   })

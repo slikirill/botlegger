@@ -7,7 +7,6 @@ services:
     - '4200:4200'
     volumes:
       - ./client:/usr/src/app
-      #- ./api/tmp/storage/images:/usr/src/app/src/assets/images/items
     depends_on: 
       - api
     networks:
