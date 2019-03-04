@@ -263,7 +263,7 @@
 //           name: 'Pizza dough',
 //           executor: 'chef',
 //           type: 'recipe',
-//           image: 'tossing-a-pizza-1.jpg',
+//           image: 'Basic-Pizza-Dough-in-Food-Processor-6.jpg',
 //           description: 'Dough (/doʊ/(help·info)) is a thick, malleable, sometimes elastic, paste made out of any grains, leguminous or chestnut crops. Dough is typically made by mixing flour with a small amount of water and/or other liquid, and sometimes includes flour yeast or other leavening agents as well as other ingredients such as various fats or flavorings.',
 //           categoryId: results.createCategories[6].id,
 //           tare: null,
@@ -367,7 +367,7 @@
 //           sellingPrice: 0.04,
 
 //         }, {
-//           name: 'Fresh Green Apple Juice',
+//           name: 'Apple Juice',
 //           executor: 'bartender',
 //           type: 'recipe',
 //           image: 'Fresh_green_apple_ju-min.jpg',

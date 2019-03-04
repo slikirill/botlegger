@@ -117,7 +117,7 @@
               [formGroupName]="i">
                   <mat-card-header fxLayout="row">
                       <div  fxLayout="row" fxFlex="70">
-                          <div mat-card-avatar [ngStyle]="{'background-image':'url(/assets/images/items/'+ingredient.ingredient.image+')'}" style="background-size: cover;"></div>
+                          <div mat-card-avatar [ngStyle]="{'background-image':'url(/backend/api/storages/images/download/'+ingredient.ingredient.image+')'}" style="background-size: cover;"></div>
                           <div fxLayout="column"> 
                               <mat-card-title>{{ingredient.ingredient.name}} </mat-card-title>
                               <mat-card-subtitle>{{ingredient.ingredient.type}}</mat-card-subtitle>
