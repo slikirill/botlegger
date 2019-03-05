@@ -5,7 +5,7 @@ module.exports = function(Relpurchaseinvoiceitem) {
   Relpurchaseinvoiceitem.searchItemsPurchaseInvoice = function(purchaseInvoiceId, fullText, cb) {
     var Item = app.models.Item;
     if (fullText === undefined) {
-      Relpurchaseinvoiceitem.find({where: {purchaseInvoiceId: {like: purchaseInvoiceId}},
+      Relpurchaseinvoiceitem.find({purchaseInvoiceId: purchaseInvoiceId,
         include: {relation: 'item',
           scope: {fields: ['name', 'unit', 'image']}}},
         (err, data) => {
@@ -72,7 +72,7 @@ module.exports = function(Relpurchaseinvoiceitem) {
     request.where = {};
     request.where.or = [];
     items.forEach((item) => {
-      request.where.or.push({and: [{itemId: {like: item.id.toString()}}, {purchaseInvoiceId: {like: purchaseInvoiceId.toString()}}]});
+      request.where.or.push({and: [{itemId: item.id}, {purchaseInvoiceId: purchaseInvoiceId}]});
     });
     return (request);
   };
@@ -104,7 +104,7 @@ module.exports = function(Relpurchaseinvoiceitem) {
 
   Relpurchaseinvoiceitem.updateTotal = function(item, cb) {
     var PurchaseInvoice = app.models.PurchaseInvoice;
-    Relpurchaseinvoiceitem.find({where: {purchaseInvoiceId: {like: item.purchaseInvoiceId}}},
+    Relpurchaseinvoiceitem.find({purchaseInvoiceId: item.purchaseInvoiceId},
       (err, items) => {
         let total = 0;
         if (err) {

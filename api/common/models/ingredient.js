@@ -4,7 +4,7 @@ module.exports = function(Ingredient) {
   Ingredient.search = function(recipeId, fullText, cb) {
     var Item = app.models.Item;
     if (fullText === undefined) {
-      Ingredient.find({where: {recipeId: {like: recipeId}},
+      Ingredient.find({recipeId: recipeId,
         include: {relation: 'ingredient',
           scope: {fields: ['name', 'unit', 'image']}}},
         (err, data) => {
@@ -80,7 +80,7 @@ module.exports = function(Ingredient) {
     request.where = {};
     request.where.or = [];
     items.forEach((item) => {
-      request.where.or.push({and: [{ingredientId: {like: item.id.toString()}}, {recipeId: {like: recipeId.toString()}}]});
+      request.where.or.push({and: [{ingredientId: item.include}, {recipeId: recipeId}]});
     });
     return (request);
   };
@@ -107,7 +107,7 @@ module.exports = function(Ingredient) {
 
   Ingredient.updateSummary = function(recipeId, cb) {
     var Item = app.models.Item;
-    Ingredient.find({where: {recipeId: {like: recipeId}},
+    Ingredient.find({recipeId: recipeId,
       include: {relation: 'ingredient',
         scope: {fields: ['sellingPrice', 'averageCost']}}},
       (err, ingredients) => {

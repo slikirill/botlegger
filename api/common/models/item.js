@@ -109,7 +109,7 @@ module.exports = function(Item) {
   Item.search = function(recipeId, fullText, callback) {
     return Item.find({where: {name: {like: fullText, options: 'i'}},
       fields: {name: true},
-      include: {relation: 'ingredient', scope: {where: {recipeId: {like: recipeId}}}}},
+      include: {relation: 'ingredient', scope: {where: [{recipeId: recipeId}]}}},
       function(err, data) {
         if (err)
           return err;

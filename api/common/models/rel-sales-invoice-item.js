@@ -227,7 +227,7 @@ module.exports = function(Relsalesinvoiceitem) {
 
   Relsalesinvoiceitem.updateTotal = function(item, cb) {
     var SalesInvoice = app.models.SalesInvoice;
-    Relsalesinvoiceitem.find({where: {salesInvoiceId: {like: item.salesInvoiceId}}},
+    Relsalesinvoiceitem.find({salesInvoiceId: item.salesInvoiceId},
       (err, items) => {
         let total = 0;
         if (err) {
@@ -252,7 +252,7 @@ module.exports = function(Relsalesinvoiceitem) {
     var SalesInvoice = app.models.SalesInvoice;
     var Item = app.models.Item;
     var Ingredient = app.models.Ingredient;
-    Ingredient.find({where: {recipeId: {like: item.itemId}},
+    Ingredient.find({recipeId: item.itemId,
       include: {relation: 'ingredient',
         scope: {fields: ['name', 'quantity']}}},
       (err, data) => {

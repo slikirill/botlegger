@@ -21,7 +21,7 @@ module.exports = function(Purchaseinvoice) {
 
   Purchaseinvoice.agregateAverageQuantity = function(id, cb) {
     var Relpurchaseinvoiceitem = app.models.relPurchaseInvoiceItem;
-    Relpurchaseinvoiceitem.find({where: {purchaseInvoiceId: {like: id}},
+    Relpurchaseinvoiceitem.find({purchaseInvoiceId: id,
       include: {relation: 'item'}, scope: {fields: ['quantity', 'averageCost']}},
     function(err, data) {
       if (err) {
@@ -85,7 +85,7 @@ module.exports = function(Purchaseinvoice) {
     async.each(data, function(recipeId, callback) {
       console.log(recipeId);
       Ingredient.find({
-        where: {recipeId: {like: recipeId}},
+        where: {recipeId: recipeId},
         include: {relation: 'ingredient',
           scope: {fields: ['averageCost']}},
       }, {},
